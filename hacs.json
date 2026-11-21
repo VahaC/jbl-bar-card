@@ -1,0 +1,6 @@
+{
+  "name": "JBL Bar Card",
+  "filename": "jbl-bar-card.js",
+  "render_readme": true,
+  "homeassistant": "2025.1.0"
+}

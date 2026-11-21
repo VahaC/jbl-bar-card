@@ -1,0 +1,26 @@
+{
+  "name": "jbl-bar-card",
+  "version": "0.1.0",
+  "description": "Home Assistant dashboard card for the JBL Bar 9.1 (jbl_bar_91 integration).",
+  "type": "module",
+  "private": true,
+  "license": "MIT",
+  "author": "VahaC",
+  "scripts": {
+    "dev": "vite --open /demo/index.html",
+    "build": "vite build",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "lit": "3.3.3"
+  },
+  "devDependencies": {
+    "@mdi/js": "7.4.47",
+    "@types/node": "22.20.5",
+    "happy-dom": "20.14.6",
+    "typescript": "5.9.3",
+    "vite": "7.3.7",
+    "vitest": "3.2.7"
+  }
+}

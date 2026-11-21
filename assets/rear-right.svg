@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 116" role="img" aria-label="Right rear speaker">
+  <defs>
+    <linearGradient id="jrr-body" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7a7a7d"/>
+      <stop offset="0.1" stop-color="#69696c"/>
+      <stop offset="0.6" stop-color="#5a5a5d"/>
+      <stop offset="1" stop-color="#454548"/>
+    </linearGradient>
+    <linearGradient id="jrr-base" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#353538"/>
+      <stop offset="1" stop-color="#202022"/>
+    </linearGradient>
+    <linearGradient id="jrr-grille" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#5a5a5d"/>
+      <stop offset="1" stop-color="#4c4c4f"/>
+    </linearGradient>
+    <linearGradient id="jrr-side" x1="1" y1="0" x2="0" y2="0">
+      <stop offset="0" stop-color="#3a3a3d"/>
+      <stop offset="1" stop-color="#2a2a2c"/>
+    </linearGradient>
+    <pattern id="jrr-holes" width="3" height="3" patternUnits="userSpaceOnUse">
+      <circle cx="1.5" cy="1.5" r="0.75" fill="#000" fill-opacity="0.28"/>
+    </pattern>
+    <radialGradient id="jrr-shadow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#000" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#000" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <ellipse cx="75" cy="107" rx="74" ry="7" fill="url(#jrr-shadow)"/>
+  <rect x="3" y="10" width="144" height="94" rx="20" fill="url(#jrr-base)"/>
+  <rect x="3" y="3" width="144" height="88" rx="20" fill="url(#jrr-body)"/>
+  <path d="M22 4.5 H128" stroke="#fff" stroke-opacity="0.22" stroke-width="1.2"/>
+  <rect x="26" y="11" width="112" height="72" rx="15" fill="url(#jrr-grille)" stroke="#000" stroke-opacity="0.18"/>
+  <rect x="26" y="11" width="112" height="72" rx="15" fill="url(#jrr-holes)"/>
+  <rect x="6" y="12" width="13" height="70" rx="5" fill="url(#jrr-side)"/>
+  <rect x="8.5" y="36" width="7" height="22" rx="3.5" fill="#1f1f21" stroke="#a0a0a4" stroke-opacity="0.5" stroke-width="0.8"/>
+  <circle cx="12" cy="42" r="1.6" fill="#a0a0a4" fill-opacity="0.7"/>
+  <path d="M20 90.5 H130" stroke="#000" stroke-opacity="0.35"/>
+</svg>

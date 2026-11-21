@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>JBL Bar Card demo</title>
+    <style>
+      /* A subset of Home Assistant's theme variables (default light and dark themes). */
+      :root {
+        --primary-color: #009ac7;
+        --rgb-primary-color: 0, 154, 199;
+        --accent-color: #ff9800;
+        --primary-text-color: #212121;
+        --secondary-text-color: #727272;
+        --disabled-text-color: #bdbdbd;
+        --divider-color: rgba(0, 0, 0, 0.12);
+        --error-color: #db4437;
+        --warning-color: #ffa600;
+        --success-color: #43a047;
+        --info-color: #039be5;
+        --card-background-color: #ffffff;
+        --primary-background-color: #fafafa;
+        --secondary-background-color: #e5e5e5;
+        color-scheme: light;
+      }
+      :root.dark {
+        --primary-text-color: #e1e1e1;
+        --secondary-text-color: #9b9b9b;
+        --disabled-text-color: #6f6f6f;
+        --divider-color: rgba(225, 225, 225, 0.12);
+        --card-background-color: #1c1c1c;
+        --primary-background-color: #111111;
+        --secondary-background-color: #282828;
+        color-scheme: dark;
+      }
+      body {
+        margin: 0;
+        font-family: Roboto, "Segoe UI", system-ui, sans-serif;
+        background: var(--primary-background-color);
+        color: var(--primary-text-color);
+      }
+      header {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+        padding: 12px 16px;
+        border-bottom: 1px solid var(--divider-color);
+        background: var(--card-background-color);
+      }
+      header h1 {
+        font-size: 1.1rem;
+        margin: 0 12px 0 0;
+      }
+      header label {
+        display: inline-flex;
+        gap: 6px;
+        align-items: center;
+        font-size: 0.9rem;
+      }
+      header button,
+      header select {
+        font: inherit;
+        font-size: 0.85rem;
+        padding: 4px 10px;
+      }
+      main {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 24px;
+        padding: 16px;
+        align-items: flex-start;
+      }
+      .slot h2 {
+        font-size: 0.8rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--secondary-text-color);
+        margin: 0 0 8px;
+      }
+      #slot-full {
+        width: 440px;
+        max-width: calc(100vw - 32px);
+      }
+      #slot-narrow {
+        width: 300px;
+      }
+      #slot-compact {
+        width: 340px;
+        max-width: calc(100vw - 32px);
+      }
+      .side {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        width: 380px;
+        max-width: calc(100vw - 32px);
+      }
+      #editor {
+        background: var(--card-background-color);
+        border: 1px solid var(--divider-color);
+        border-radius: 12px;
+        padding: 12px;
+      }
+      #log {
+        background: var(--card-background-color);
+        border: 1px solid var(--divider-color);
+        border-radius: 12px;
+        padding: 12px;
+        height: 320px;
+        overflow: auto;
+        font-size: 0.75rem;
+        margin: 0;
+        white-space: pre-wrap;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>JBL Bar Card demo</h1>
+      <label><input type="checkbox" id="dark" /> Dark</label>
+      <label
+        >Language
+        <select id="lang">
+          <option value="en">English</option>
+          <option value="uk">Українська</option>
+          <option value="fr">Français</option>
+        </select>
+      </label>
+      <label><input type="checkbox" id="slow" /> Slow bar</label>
+      <button id="remote">Command from the web page</button>
+      <button id="dock">Dock / undock rears</button>
+      <button id="battery">Low battery on / off</button>
+      <button id="reach">Bar reachable / unreachable</button>
+      <button id="eqreset">Front EQ needs reset</button>
+      <button id="sub">Subwoofer status</button>
+    </header>
+    <main>
+      <section class="slot"><h2>Full card</h2><div id="slot-full"></div></section>
+      <section class="slot"><h2>300 px, default tab Timers</h2><div id="slot-narrow"></div></section>
+      <section class="slot"><h2>Compact</h2><div id="slot-compact"></div></section>
+      <section class="side">
+        <div class="slot"><h2>Editor (native fallback: no ha-form here)</h2><div id="editor"></div></div>
+        <div class="slot"><h2>Service calls</h2><pre id="log"></pre></div>
+      </section>
+    </main>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>

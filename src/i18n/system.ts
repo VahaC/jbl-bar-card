@@ -1,0 +1,257 @@
+import type { TabStrings } from "./index";
+
+/**
+ * System tab strings, looked up as "system.<key>".
+ * Keep en, uk and fr in sync (tests/i18n.test.ts checks it).
+ */
+export const strings: TabStrings = {
+  en: {
+    empty: "This soundbar reports no system information.",
+    status: "Status",
+    percent: "{value}%",
+    turn_on_first: "Turn the soundbar on first.",
+    unavailable: "Not available right now.",
+
+    "battery.title": "Rear speaker battery low",
+    "battery.left": "Rear left: {level}",
+    "battery.right": "Rear right: {level}",
+    "battery.fix":
+      "Put both rear speakers back on the ends of the soundbar: they charge while docked. Detach them again for surround sound once they are charged.",
+    "battery.charging": "The rear speakers are on the soundbar and charging.",
+
+    cpu: "CPU",
+    memory: "Memory",
+    temperature: "Temperature",
+    wifi: "Wi-Fi",
+    wifi_signal: "Wi-Fi signal",
+    "wifi.excellent": "Excellent",
+    "wifi.good": "Good",
+    "wifi.fair": "Fair",
+    "wifi.weak": "Weak",
+    uptime: "Uptime",
+    "uptime.days": "{days} d {hours} h",
+    "uptime.hours": "{hours} h {minutes} min",
+    "uptime.minutes": "{minutes} min",
+    mode_after_standby: "After standby",
+    mode_after_standby_hint: "The sound mode the soundbar uses when it wakes up from standby.",
+    "disabled.summary": "{names}: turned off in Home Assistant",
+    "disabled.how":
+      "These sensors are disabled by default. To show one, open Settings → Devices & services → JBL Bar 9.1 and the soundbar's device page. Under Diagnostic, open the entities that are not shown, pick the sensor, open its settings (gear icon), turn on Enabled and select Update. It appears here after about 30 seconds.",
+
+    "bt.title": "Bluetooth",
+    "bt.no_device": "No device connected",
+    "bt.connected": "Connected",
+    "bt.not_connected": "Not connected",
+    "bt.pair": "Pair a device",
+    "bt.switch": "Switch to Bluetooth",
+    "bt.needs_source": "Pairing works only while Bluetooth is the source.",
+    "bt.pairing_hint":
+      "The soundbar is ready to pair. Open the Bluetooth settings on your phone or tablet and pick the soundbar in the list.",
+
+    "cal.title": "Surround calibration",
+    "cal.idle": "Not running",
+    "cal.step_starting": "Step {step} starting…",
+    "cal.starting_in": "Starting in {seconds} s…",
+    "cal.measuring": "Measuring…",
+    "cal.step1_done": "Step 1 done",
+    "cal.done": "Calibration done",
+    "cal.failed": "Failed",
+    "cal.cancelled": "Cancelled",
+    "cal.start": "Start calibration",
+    "cal.start_step2": "Start step 2",
+    "cal.retry": "Try again",
+    "cal.running": "Measuring…",
+    "cal.hint_step1":
+      "Step 1: put both rear speakers near your listening position. Keep the room quiet: the soundbar measures for about 35 seconds.",
+    "cal.hint_step2":
+      "Step 2: put the rear speakers where they will stay, behind or beside you. Keep the room quiet: the soundbar measures for about 35 seconds.",
+    "cal.hint_running": "Keep the room quiet until the soundbar finishes (about 35 seconds).",
+    "cal.needs_undock": "Detach both rear speakers from the soundbar first.",
+    "cal.wait_sub": "Wait until subwoofer pairing ends.",
+
+    "sub.title": "Subwoofer",
+    "sub.connected": "Connected",
+    "sub.not_connected": "Not connected",
+    "sub.reconnecting": "Reconnecting",
+    "sub.pairing": "Pairing",
+    "sub.no_status": "No recent status",
+    "sub.pair": "Pair subwoofer",
+    "sub.pairing_hint":
+      "Now hold the pairing button on the subwoofer until its light flashes white quickly. The soundbar waits up to 3 minutes.",
+    "sub.wait_cal": "Wait until the calibration ends.",
+
+    "restart.title": "Restart",
+    "restart.button": "Restart soundbar",
+    "restart.hint": "Use this when the soundbar stops responding.",
+    "restart.confirm_title": "Restart the soundbar?",
+    "restart.confirm_message":
+      "It stops playing, switches off and starts again. Home Assistant cannot reach it until it is back.",
+    "restart.confirm": "Restart",
+  },
+  uk: {
+    empty: "Цей саундбар не передає системної інформації.",
+    status: "Стан",
+    percent: "{value}%",
+    turn_on_first: "Спершу увімкніть саундбар.",
+    unavailable: "Зараз недоступно.",
+
+    "battery.title": "Тилові колонки розряджаються",
+    "battery.left": "Тилова ліва: {level}",
+    "battery.right": "Тилова права: {level}",
+    "battery.fix":
+      "Поставте обидві тилові колонки на краї саундбара: вони заряджаються, коли стоять на ньому. Коли зарядяться, зніміть їх знову для об'ємного звуку.",
+    "battery.charging": "Тилові колонки стоять на саундбарі й заряджаються.",
+
+    cpu: "Процесор",
+    memory: "Пам'ять",
+    temperature: "Температура",
+    wifi: "Wi-Fi",
+    wifi_signal: "Сигнал Wi-Fi",
+    "wifi.excellent": "Відмінний",
+    "wifi.good": "Добрий",
+    "wifi.fair": "Середній",
+    "wifi.weak": "Слабкий",
+    uptime: "Час роботи",
+    "uptime.days": "{days} д {hours} год",
+    "uptime.hours": "{hours} год {minutes} хв",
+    "uptime.minutes": "{minutes} хв",
+    mode_after_standby: "Після очікування",
+    mode_after_standby_hint: "Режим звуку, у якому саундбар прокидається з режиму очікування.",
+    "disabled.summary": "{names}: вимкнено в Home Assistant",
+    "disabled.how":
+      "Ці датчики типово вимкнені. Щоб показати датчик, відкрийте Налаштування → Пристрої та служби → JBL Bar 9.1 і сторінку саундбара. У блоці «Діагностика» розгорніть приховані сутності, виберіть датчик, відкрийте його налаштування (шестерня), увімкніть «Увімкнено» й натисніть «Оновити». Він з'явиться тут приблизно за 30 секунд.",
+
+    "bt.title": "Bluetooth",
+    "bt.no_device": "Немає підключеного пристрою",
+    "bt.connected": "Підключено",
+    "bt.not_connected": "Не підключено",
+    "bt.pair": "Сполучити пристрій",
+    "bt.switch": "Перейти на Bluetooth",
+    "bt.needs_source": "Сполучення працює, лише коли джерело — Bluetooth.",
+    "bt.pairing_hint":
+      "Саундбар готовий до сполучення. Відкрийте налаштування Bluetooth на телефоні чи планшеті й виберіть саундбар у списку.",
+
+    "cal.title": "Калібрування об'ємного звуку",
+    "cal.idle": "Не виконується",
+    "cal.step_starting": "Починається крок {step}…",
+    "cal.starting_in": "Старт за {seconds} с…",
+    "cal.measuring": "Вимірювання…",
+    "cal.step1_done": "Крок 1 виконано",
+    "cal.done": "Калібрування завершено",
+    "cal.failed": "Не вдалося",
+    "cal.cancelled": "Скасовано",
+    "cal.start": "Почати калібрування",
+    "cal.start_step2": "Почати крок 2",
+    "cal.retry": "Спробувати ще раз",
+    "cal.running": "Вимірювання…",
+    "cal.hint_step1":
+      "Крок 1: поставте обидві тилові колонки біля місця, де ви слухаєте. У кімнаті має бути тихо: саундбар вимірює близько 35 секунд.",
+    "cal.hint_step2":
+      "Крок 2: поставте тилові колонки туди, де вони стоятимуть, — позаду або обабіч вас. У кімнаті має бути тихо: саундбар вимірює близько 35 секунд.",
+    "cal.hint_running": "Не шуміть, доки саундбар не закінчить (близько 35 секунд).",
+    "cal.needs_undock": "Спершу зніміть обидві тилові колонки із саундбара.",
+    "cal.wait_sub": "Зачекайте, доки закінчиться сполучення сабвуфера.",
+
+    "sub.title": "Сабвуфер",
+    "sub.connected": "Підключено",
+    "sub.not_connected": "Не підключено",
+    "sub.reconnecting": "Перепідключення",
+    "sub.pairing": "Сполучення",
+    "sub.no_status": "Немає свіжих даних",
+    "sub.pair": "Сполучити сабвуфер",
+    "sub.pairing_hint":
+      "Тепер утримуйте кнопку сполучення на сабвуфері, доки його індикатор не почне швидко блимати білим. Саундбар чекає до 3 хвилин.",
+    "sub.wait_cal": "Зачекайте, доки закінчиться калібрування.",
+
+    "restart.title": "Перезапуск",
+    "restart.button": "Перезапустити саундбар",
+    "restart.hint": "Знадобиться, якщо саундбар перестав відповідати.",
+    "restart.confirm_title": "Перезапустити саундбар?",
+    "restart.confirm_message":
+      "Він перестане грати, вимкнеться й увімкнеться знову. Home Assistant не бачитиме його, доки він не запуститься.",
+    "restart.confirm": "Перезапустити",
+  },
+  fr: {
+    empty: "Cette barre de son ne transmet aucune information système.",
+    status: "État",
+    percent: "{value} %",
+    turn_on_first: "Allumez d'abord la barre de son.",
+    unavailable: "Indisponible pour le moment.",
+
+    "battery.title": "Batterie des enceintes arrière faible",
+    "battery.left": "Arrière gauche : {level}",
+    "battery.right": "Arrière droite : {level}",
+    "battery.fix":
+      "Remettez les deux enceintes arrière aux extrémités de la barre de son : elles se rechargent quand elles y sont fixées. Détachez-les de nouveau pour le son surround une fois chargées.",
+    "battery.charging": "Les enceintes arrière sont sur la barre de son et se rechargent.",
+
+    cpu: "Processeur",
+    memory: "Mémoire",
+    temperature: "Température",
+    wifi: "Wi-Fi",
+    wifi_signal: "Signal Wi-Fi",
+    "wifi.excellent": "Excellent",
+    "wifi.good": "Bon",
+    "wifi.fair": "Moyen",
+    "wifi.weak": "Faible",
+    uptime: "Allumée depuis",
+    "uptime.days": "{days} j {hours} h",
+    "uptime.hours": "{hours} h {minutes} min",
+    "uptime.minutes": "{minutes} min",
+    mode_after_standby: "Après la veille",
+    mode_after_standby_hint: "Le mode sonore que la barre de son reprend en sortant de veille.",
+    "disabled.summary": "{names} : désactivé dans Home Assistant",
+    "disabled.how":
+      "Ces capteurs sont désactivés par défaut. Pour en afficher un, ouvrez Paramètres → Appareils et services → JBL Bar 9.1, puis la page de l'appareil. Sous Diagnostic, dépliez les entités masquées, choisissez le capteur, ouvrez ses paramètres (roue dentée), cochez Activé et choisissez Mettre à jour. Il apparaît ici au bout d'environ 30 secondes.",
+
+    "bt.title": "Bluetooth",
+    "bt.no_device": "Aucun appareil connecté",
+    "bt.connected": "Connecté",
+    "bt.not_connected": "Non connecté",
+    "bt.pair": "Associer un appareil",
+    "bt.switch": "Passer en Bluetooth",
+    "bt.needs_source": "L'association ne fonctionne que lorsque la source est Bluetooth.",
+    "bt.pairing_hint":
+      "La barre de son est prête à être associée. Ouvrez les réglages Bluetooth de votre téléphone ou tablette et choisissez la barre de son dans la liste.",
+
+    "cal.title": "Calibrage du surround",
+    "cal.idle": "Inactif",
+    "cal.step_starting": "Début de l'étape {step}…",
+    "cal.starting_in": "Démarrage dans {seconds} s…",
+    "cal.measuring": "Mesure en cours…",
+    "cal.step1_done": "Étape 1 terminée",
+    "cal.done": "Calibrage terminé",
+    "cal.failed": "Échec",
+    "cal.cancelled": "Annulé",
+    "cal.start": "Lancer le calibrage",
+    "cal.start_step2": "Lancer l'étape 2",
+    "cal.retry": "Réessayer",
+    "cal.running": "Mesure en cours…",
+    "cal.hint_step1":
+      "Étape 1 : placez les deux enceintes arrière près de votre place d'écoute. Gardez le silence : la barre de son mesure pendant environ 35 secondes.",
+    "cal.hint_step2":
+      "Étape 2 : placez les enceintes arrière à leur emplacement définitif, derrière ou à côté de vous. Gardez le silence : la barre de son mesure pendant environ 35 secondes.",
+    "cal.hint_running": "Gardez le silence jusqu'à la fin de la mesure (environ 35 secondes).",
+    "cal.needs_undock": "Détachez d'abord les deux enceintes arrière de la barre de son.",
+    "cal.wait_sub": "Attendez la fin de l'association du caisson de basses.",
+
+    "sub.title": "Caisson de basses",
+    "sub.connected": "Connecté",
+    "sub.not_connected": "Non connecté",
+    "sub.reconnecting": "Reconnexion",
+    "sub.pairing": "Association",
+    "sub.no_status": "Pas d'état récent",
+    "sub.pair": "Associer le caisson",
+    "sub.pairing_hint":
+      "Maintenez maintenant le bouton d'association du caisson de basses jusqu'à ce que son voyant clignote rapidement en blanc. La barre de son attend jusqu'à 3 minutes.",
+    "sub.wait_cal": "Attendez la fin du calibrage.",
+
+    "restart.title": "Redémarrage",
+    "restart.button": "Redémarrer la barre de son",
+    "restart.hint": "À utiliser quand la barre de son ne répond plus.",
+    "restart.confirm_title": "Redémarrer la barre de son ?",
+    "restart.confirm_message":
+      "Elle arrête la lecture, s'éteint puis redémarre. Home Assistant ne peut plus la joindre jusqu'à son retour.",
+    "restart.confirm": "Redémarrer",
+  },
+};
