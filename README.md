@@ -6,7 +6,7 @@ One card shows the speakers, source, volume, sound settings, timers, display mes
 system status, and talks to the bar through the integration's own services: no YAML
 packages, scripts or helpers are needed.
 
-[![Open in HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=VahaC&repository=jbl-bar-card&category=plugin)
+[![Open in Marketplace](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=VahaC&repository=jbl-bar-card&category=plugin)
 [![Validate](https://github.com/VahaC/jbl-bar-card/actions/workflows/validate.yml/badge.svg)](https://github.com/VahaC/jbl-bar-card/actions/workflows/validate.yml)
 [![Build](https://github.com/VahaC/jbl-bar-card/actions/workflows/build.yml/badge.svg)](https://github.com/VahaC/jbl-bar-card/actions/workflows/build.yml)
 
@@ -111,9 +111,20 @@ The bar runs one command at a time, so every control follows the same rules:
 
 ## Installation
 
-### HACS (custom repository)
+### Marketplace (Home Assistant 2026.11 and newer)
 
-Click **Open in HACS** at the top of this page, or add the repository by hand:
+Since 2026.11, HACS is built into Home Assistant as the **Marketplace**. Click **Open in
+Marketplace** at the top of this page, or add the repository by hand:
+
+1. Go to **Settings → Marketplace** and select **Add from link** in the upper-right corner.
+2. Under **GitHub link**, enter `VahaC/jbl-bar-card`. If you are asked for the type, choose
+   **Dashboard**. Select **Add**.
+3. Open **JBL Bar Card** and install it. The Marketplace adds the dashboard resource for you.
+   If you manage dashboard resources in YAML, add the resource the install dialog shows,
+   `/local/community/jbl-bar-card/jbl-bar-card.js` with type `module`.
+4. Reload the browser.
+
+### HACS (before Home Assistant 2026.11)
 
 1. In HACS, open the menu (three dots) and choose **Custom repositories**.
 2. Repository: `https://github.com/VahaC/jbl-bar-card`, type: **Dashboard**. Add it.

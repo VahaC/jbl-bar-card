@@ -6,6 +6,13 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-11-21
+
+### Changed
+
+- README: installation through the Marketplace built into Home Assistant 2026.11 (Settings →
+  Marketplace → Add from link), with the HACS steps kept for older versions.
+
 ## [0.1.0] - 2026-11-21
 
 First release.
