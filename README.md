@@ -6,6 +6,20 @@ One card shows the speakers, source, volume, sound settings, timers, display mes
 system status, and talks to the bar through the integration's own services: no YAML
 packages, scripts or helpers are needed.
 
+**Built on two projects you need first:**
+
+```
+JBL Bar 9.1  ←  browser remote (kisinga/jbl-bar-toolkit)  ←  jbl_bar_91 integration (naonak/jbl-bar-toolkit-ha)  ←  this card
+```
+
+1. [kisinga/jbl-bar-toolkit](https://github.com/kisinga/jbl-bar-toolkit): installs the local
+   browser remote on the bar.
+2. [naonak/jbl-bar-toolkit-ha](https://github.com/naonak/jbl-bar-toolkit-ha): the Home Assistant
+   integration that talks to that remote (0.13.2 or newer).
+
+The card only displays and controls what the integration provides. See
+[Requirements](#requirements) for which card blocks need which remote feature.
+
 [![Open in Marketplace](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=VahaC&repository=jbl-bar-card&category=plugin)
 [![Validate](https://github.com/VahaC/jbl-bar-card/actions/workflows/validate.yml/badge.svg)](https://github.com/VahaC/jbl-bar-card/actions/workflows/validate.yml)
 [![Build](https://github.com/VahaC/jbl-bar-card/actions/workflows/build.yml/badge.svg)](https://github.com/VahaC/jbl-bar-card/actions/workflows/build.yml)
@@ -206,6 +220,15 @@ npm run build      # dist/jbl-bar-card.js
 ```
 
 See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for how the card is organised.
+
+## Credits
+
+- [kisinga](https://github.com/kisinga) for
+  [JBL Bar Toolkit](https://github.com/kisinga/jbl-bar-toolkit), the browser remote that runs on
+  the bar and makes local control possible.
+- [naonak](https://github.com/naonak) for
+  [JBL Bar Toolkit for Home Assistant](https://github.com/naonak/jbl-bar-toolkit-ha), the
+  `jbl_bar_91` integration whose entities and services this card uses.
 
 ## License
 

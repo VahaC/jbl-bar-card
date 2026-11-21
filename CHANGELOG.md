@@ -6,6 +6,11 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Changed
+
+- README: the projects the card is built on (kisinga/jbl-bar-toolkit and naonak/jbl-bar-toolkit-ha)
+  are named at the top with the dependency chain, and a Credits section thanks their authors.
+
 ## [0.1.1] - 2026-11-21
 
 ### Changed
