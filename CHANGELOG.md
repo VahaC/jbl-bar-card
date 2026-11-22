@@ -6,6 +6,12 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Fixed
+
+- Sound, `mixer` layout: on cards wider than about 400 px the faders now stretch to the card's
+  width instead of leaving an empty gap on the right. Narrow cards still scroll sideways.
+- Demo: `?width=<px>` sets the full card's width, to check layouts on wide cards.
+
 ## [0.2.0] - 2026-11-22
 
 ### Added

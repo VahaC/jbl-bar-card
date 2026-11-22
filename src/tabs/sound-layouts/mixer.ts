@@ -23,8 +23,8 @@ import type {
  * is a compact stepper under the console, and every reason why a fader cannot move is written out
  * under it.
  *
- * The whole console fits a normal full-width card (about 400 px). Only on narrower cards does it
- * switch to wider strips and scroll sideways (container query), with the EQ title, preset and dB
+ * The whole console fits a normal full-width card (about 400 px) and stretches to fill wider
+ * ones. Only on narrower cards does it switch to wider strips and scroll sideways (container query), with the EQ title, preset and dB
  * scale pinned while the bands scroll under them, and an edge fade on the side with hidden faders.
  *
  * Renders the model only (docs/layouts-sound.md). Dragging only previews: every fader calls the
@@ -953,6 +953,27 @@ export const soundMixerStyles = css`
   }
   .sound-mixer .sound-mixer-sync-hint {
     padding: 0 6px 4px 0;
+  }
+
+  /*
+   * Cards wider than the console: the strips grow to fill the width instead of leaving an empty
+   * gap on the right. Free space goes to the two groups in proportion to their strips (4 levels,
+   * 5 bands + bass offset), then equally to the strips of each group; the dB scale stays narrow.
+   */
+  @container (width >= 402px) {
+    .sound-mixer .sound-mixer-desk {
+      width: 100%;
+    }
+    .sound-mixer .sound-mixer-levels {
+      flex: 4 1 auto;
+    }
+    .sound-mixer .sound-mixer-eq {
+      flex: 6 1 auto;
+    }
+    .sound-mixer .sound-mixer-strip {
+      flex: 1 0 var(--sound-mixer-w);
+      width: auto;
+    }
   }
 
   /* Narrow cards: wider strips, sideways scrolling, an edge fade where faders are hidden. */

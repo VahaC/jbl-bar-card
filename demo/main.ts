@@ -74,6 +74,10 @@ const configs: Record<string, JblBarCardConfig> = {
 };
 
 const cards: JblBarCard[] = [];
+// ?width=520 sets the full card's width, to check layouts on wide cards.
+const fullWidth = Number(params.get("width"));
+if (fullWidth > 0) document.getElementById("slot-full")!.style.width = `${fullWidth}px`;
+
 for (const [slot, config] of Object.entries(configs)) {
   const card = document.createElement("jbl-bar-card");
   card.setConfig(config);
