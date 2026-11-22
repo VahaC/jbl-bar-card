@@ -5,6 +5,15 @@ import { strings as home } from "./home";
 import { strings as sound } from "./sound";
 import { strings as timers } from "./timers";
 import { strings as system } from "./system";
+import { strings as system_map } from "./system_map";
+import { strings as system_list } from "./system_list";
+import { strings as system_health } from "./system_health";
+import { strings as home_remote } from "./home_remote";
+import { strings as home_media } from "./home_media";
+import { strings as sound_mixer } from "./sound_mixer";
+import { strings as sound_cards } from "./sound_cards";
+import { strings as timers_kitchen } from "./timers_kitchen";
+import { strings as timers_compact } from "./timers_compact";
 import type { HomeAssistant, Translate } from "../types";
 
 export type Lang = "en" | "uk" | "fr";
@@ -24,7 +33,21 @@ export interface TabStrings {
 }
 
 export const CORE: Record<Lang, Dict> = { en, uk, fr };
-export const TAB_STRINGS: Record<string, TabStrings> = { home, sound, timers, system };
+export const TAB_STRINGS: Record<string, TabStrings> = {
+  home,
+  sound,
+  timers,
+  system,
+  system_map,
+  system_list,
+  system_health,
+  home_remote,
+  home_media,
+  sound_mixer,
+  sound_cards,
+  timers_kitchen,
+  timers_compact,
+};
 
 const cache = new Map<Lang, Dict>();
 

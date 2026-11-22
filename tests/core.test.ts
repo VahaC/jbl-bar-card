@@ -19,7 +19,16 @@ describe("config", () => {
       default_tab: "home",
       compact: false,
       recent: false,
+      layouts: { home: "classic", sound: "classic", timers: "classic", system: "list" },
     });
+  });
+
+  it("takes a layout per tab and refuses unknown ones", () => {
+    const c = normalizeConfig({ type: "x", layouts: { sound: "mixer", system: "health" } });
+    expect(c.layouts).toEqual({ home: "classic", sound: "mixer", timers: "classic", system: "health" });
+    expect(() => normalizeConfig({ type: "x", layouts: { sound: "disco" } })).toThrow(/disco.*sound.*classic, mixer, cards/);
+    expect(() => normalizeConfig({ type: "x", layouts: { kitchen: "x" } as never })).toThrow(/kitchen/);
+    expect(() => normalizeConfig({ type: "x", layouts: ["mixer"] as never })).toThrow(/layouts/);
   });
 
   it("keeps the card's tab order and a valid default tab", () => {

@@ -31,37 +31,37 @@ export const fr: Record<string, string> = {
   "error.no_bar":
     "Aucune JBL Bar 9.1 trouvée. Ajoutez d'abord l'intégration JBL Bar 9.1 (jbl_bar_91), puis choisissez son lecteur multimédia dans l'éditeur de la carte.",
   "error.entity_not_found":
-    "{entity} n'existe pas. Barres JBL trouvées : {bars}. Choisissez-en une comme entité dans l'éditeur de la carte.",
+    "{entity} n'existe pas. Barres de son JBL trouvées : {bars}. Choisissez-en une comme entité dans l'éditeur de la carte.",
   "error.not_jbl":
-    "{entity} n'est pas un lecteur multimédia de l'intégration JBL Bar 9.1 (jbl_bar_91). Barres JBL trouvées : {bars}. Choisissez-en une comme entité.",
+    "{entity} n'est pas un lecteur multimédia de l'intégration JBL Bar 9.1 (jbl_bar_91). Barres de son JBL trouvées : {bars}. Choisissez-en une comme entité.",
   "error.connection_lost":
     "La connexion à Home Assistant a été perdue : la commande n'a peut-être pas atteint la barre de son. Réessayez.",
 
-  "svc.refused": "La barre a refusé la commande : {error}",
-  "svc.unreachable": "La télécommande web de la barre est injoignable : {error}",
+  "svc.refused": "La barre de son a refusé la commande : {error}",
+  "svc.unreachable": "La télécommande web de la barre de son est injoignable : {error}",
   "svc.unavailable": "Ce réglage n'est pas disponible pour le moment.",
-  "svc.not_reached": "La barre n'a pas confirmé le niveau demandé.",
-  "svc.busy": "La barre exécute encore une autre commande ; réessayez quand elle est terminée.",
+  "svc.not_reached": "La barre de son n'a pas confirmé le niveau demandé.",
+  "svc.busy": "La barre de son exécute encore une autre commande. Réessayez quand elle sera terminée.",
   "svc.bass_offset_range": "La correction des basses va de -3 à +3 dB par pas de 0,5 dB.",
   "svc.unsupported_model":
-    "La télécommande du toolkit à cette adresse indique maintenant le modèle {model}. Seule la Bar 9.1 (bar91) est prise en charge.",
-  "svc.display_one_length": "Choisissez un seul réglage parmi répétitions, durée et jusqu'à effacement.",
-  "svc.display_when_on_unsupported": "Cette télécommande du toolkit ne sait pas attendre que la barre soit allumée : mettez-la à jour.",
+    "La télécommande web JBL Bar Toolkit à cette adresse indique maintenant le modèle {model}. Seule la Bar 9.1 (bar91) est prise en charge.",
+  "svc.display_one_length": "Choisissez un seul mode parmi « Répéter », « Durée » et « Permanent ».",
+  "svc.display_when_on_unsupported": "Cette télécommande web JBL Bar Toolkit ne sait pas attendre que la barre de son soit allumée : mettez-la à jour.",
   "svc.display_duration": "La durée va de 1 seconde à 24 heures.",
   "svc.display_unsupported":
-    "La télécommande installée sur la barre n'affiche pas encore de messages. Mettez à jour JBL Bar Toolkit sur la barre.",
+    "La télécommande web de la barre de son n'affiche pas encore de messages. Mettez à jour JBL Bar Toolkit sur la barre de son.",
   "svc.timer_duration": "La durée va de 1 seconde à 12 heures.",
   "svc.timer_ring": "La durée de sonnerie va de 3 secondes à 5 minutes.",
   "svc.timer_not_found": "Aucun minuteur nommé {name} n'est en cours.",
   "svc.timer_which": "Donnez le nom ou l'identifiant du minuteur, ou choisissez tous.",
   "svc.timer_unsupported":
-    "La télécommande installée sur la barre n'a pas encore de minuteurs. Mettez à jour JBL Bar Toolkit sur la barre.",
+    "La télécommande web de la barre de son n'a pas encore de minuteurs. Mettez à jour JBL Bar Toolkit sur la barre de son.",
   "svc.timer_extend_duration": "Le temps ajouté va de 1 seconde à 1 heure.",
   "svc.timer_none_running": "Aucun minuteur n'est en cours.",
   "svc.timer_extend_unsupported":
-    "La télécommande installée sur la barre ne sait pas encore ajouter du temps à un minuteur. Mettez à jour JBL Bar Toolkit sur la barre.",
+    "La télécommande web de la barre de son ne sait pas encore ajouter du temps à un minuteur. Mettez à jour JBL Bar Toolkit sur la barre de son.",
   "svc.restart_unsupported":
-    "La télécommande installée sur la barre ne sait pas encore la redémarrer. Mettez à jour JBL Bar Toolkit sur la barre.",
+    "La télécommande web de la barre de son ne sait pas encore la redémarrer. Mettez à jour JBL Bar Toolkit sur la barre de son.",
   "svc.not_a_recent": "{entity} n'est pas un minuteur ou un message récent.",
 
   "config.invalid": "Configuration non valide.",
@@ -70,12 +70,14 @@ export const fr: Record<string, string> = {
   "config.tabs_list": "tabs doit être une liste parmi : {allowed}.",
   "config.unknown_tab": "Onglet inconnu {value} dans tabs. Valeurs possibles : {allowed}.",
   "config.unknown_default_tab": "default_tab inconnu « {value} ». Valeurs possibles : {allowed}.",
+  "config.layouts_map": "layouts doit associer un onglet à une disposition, par exemple layouts: {sound: mixer}.",
+  "config.unknown_layout": "Disposition « {value} » inconnue pour l'onglet {tab}. Valeurs possibles : {allowed}.",
 
   "busy.generic": "La barre de son est occupée",
   "busy.running": "{action}…",
   "busy.from_remote": "(depuis la page web)",
 
-  "action.power": "Mise en marche ou arrêt de la barre",
+  "action.power": "Mise en marche ou arrêt de la barre de son",
   "action.volume_up": "Augmentation du volume",
   "action.volume_down": "Baisse du volume",
   "action.mute": "Activation ou coupure du son",
@@ -117,8 +119,21 @@ export const fr: Record<string, string> = {
   "editor.tabs": "Onglets visibles",
   "editor.default_tab": "Onglet par défaut",
   "editor.advanced": "Avancé",
-  "editor.recent": "Afficher les minuteurs et messages récents avec plusieurs barres",
+  "editor.layouts": "Disposition des onglets",
+  "layout.home.classic": "Classique",
+  "layout.home.remote": "Télécommande",
+  "layout.home.media": "Lecteur multimédia",
+  "layout.sound.classic": "Classique",
+  "layout.sound.mixer": "Table de mixage",
+  "layout.sound.cards": "Cartes",
+  "layout.timers.classic": "Classique",
+  "layout.timers.kitchen": "Minuteur de cuisine",
+  "layout.timers.compact": "Compact",
+  "layout.system.list": "Liste",
+  "layout.system.map": "Carte des appareils",
+  "layout.system.health": "État du système",
+  "editor.recent": "Afficher les minuteurs et messages récents avec plusieurs barres de son",
   "editor.recent_helper":
-    "Les boutons des minuteurs et messages récents ne sont liés à aucune barre : ils appartiennent à la première barre JBL chargée par Home Assistant. Activez cette option uniquement sur la carte de cette barre.",
+    "Les boutons des minuteurs et messages récents ne sont liés à aucune barre de son : ils appartiennent à la première barre de son JBL chargée par Home Assistant. Activez cette option uniquement sur la carte de cette barre.",
   "editor.loading": "Chargement de l'éditeur…",
 };

@@ -154,7 +154,7 @@ describe("helpers", () => {
       translation_placeholders: { error: "busy wire" },
     };
     expect(serviceErrorText(refused, t("uk"))).toBe("Саундбар відхилив команду: busy wire");
-    expect(serviceErrorText(refused, t("fr"))).toBe("La barre a refusé la commande : busy wire");
+    expect(serviceErrorText(refused, t("fr"))).toBe("La barre de son a refusé la commande : busy wire");
     const other = { code: "x", message: "Raw English", translation_domain: "hue", translation_key: "boom" };
     const localize = vi.fn().mockReturnValue("Localisé");
     expect(serviceErrorText(other, t("fr"), { localize })).toBe("Localisé");

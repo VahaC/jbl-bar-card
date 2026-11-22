@@ -1,6 +1,6 @@
 import { makeTranslate, normalizeLang } from "./i18n";
-import { TAB_IDS } from "./types";
-import type { JblBarCardConfig, NormalizedConfig, TabId, Translate } from "./types";
+import { TAB_IDS, TAB_LAYOUTS } from "./types";
+import type { JblBarCardConfig, NormalizedConfig, TabId, TabLayouts, Translate } from "./types";
 
 export const CARD_TAG = "jbl-bar-card";
 export const EDITOR_TAG = "jbl-bar-card-editor";
@@ -44,6 +44,7 @@ export function normalizeConfig(config: JblBarCardConfig, t: Translate = makeTra
     throw new Error(t("config.unknown_default_tab", { value: String(config.default_tab), allowed }));
   }
   const defaultTab = config.default_tab && tabs.includes(config.default_tab) ? config.default_tab : tabs[0];
+  const layouts = normalizeLayouts(config.layouts, t);
   return {
     type: config.type,
     entity: config.entity || undefined,
@@ -52,5 +53,25 @@ export function normalizeConfig(config: JblBarCardConfig, t: Translate = makeTra
     default_tab: defaultTab,
     compact: config.compact === true,
     recent: config.recent === true,
+    layouts,
   };
+}
+
+/** Each tab's layout: the configured one, else the tab's first (default) layout. */
+export function normalizeLayouts(raw: JblBarCardConfig["layouts"], t: Translate = makeTranslate("en")): TabLayouts {
+  const out = Object.fromEntries(TAB_IDS.map((tab) => [tab, TAB_LAYOUTS[tab][0]])) as TabLayouts;
+  if (raw === undefined || raw === null) return out;
+  if (typeof raw !== "object" || Array.isArray(raw)) throw new Error(t("config.layouts_map"));
+  for (const [tab, value] of Object.entries(raw)) {
+    if (!isTab(tab)) {
+      throw new Error(t("config.unknown_tab", { value: tab, allowed: TAB_IDS.join(", ") }));
+    }
+    if (value === undefined || value === null || value === "") continue;
+    const allowed: readonly string[] = TAB_LAYOUTS[tab];
+    if (typeof value !== "string" || !allowed.includes(value)) {
+      throw new Error(t("config.unknown_layout", { tab, value: String(value), allowed: allowed.join(", ") }));
+    }
+    (out as Record<TabId, string>)[tab] = value;
+  }
+  return out;
 }

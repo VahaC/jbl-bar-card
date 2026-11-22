@@ -6,10 +6,37 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-11-22
+
+### Added
+
+- Three layouts for every tab, chosen per tab with the new `layouts` option or under **Tab layouts**
+  in the visual editor:
+  - Home: `classic` (default), `remote` (big keys, volume rocker, power and mute), `media` (now
+    playing and a volume knob).
+  - Sound: `classic` (default), `mixer` (all levels, EQ bands and bass offset as faders), `cards`
+    (a card per setting and a draggable EQ curve).
+  - Timers: `classic` (default), `kitchen` (the next timer as a big ring, big quick starts),
+    `compact` (sub-tabs for timers, messages and the clock).
+  - System: `list` (default, gauges and a compact list), `map` (the speakers as a picture with
+    their actions), `health` (a health summary with device cards).
+- Unknown layouts in the config are refused with a message that lists the allowed ones.
+
 ### Changed
 
+- The System tab was redesigned: the old layout with a titled section per device is replaced by the
+  three layouts above. Disabled actions always say why in visible text.
+- Each tab's rules (pending states, reasons, debounced sliders, long presses, forms) moved into a
+  model the layouts share, so every layout behaves the same.
+- The header power button shows the target state at once and has a fixed accessible name.
+- Ukrainian: "задні колонки" everywhere (no more "тилові"), "не на зв'язку" for an unreachable
+  soundbar. French: "appairer", "barre de son", "injoignable" used consistently.
 - README: the projects the card is built on (kisinga/jbl-bar-toolkit and naonak/jbl-bar-toolkit-ha)
   are named at the top with the dependency chain, and a Credits section thanks their authors.
+
+### Fixed
+
+- The volume number no longer sticks on a dragged value when the bar went to standby mid-drag.
 
 ## [0.1.1] - 2026-11-21
 

@@ -107,6 +107,18 @@ export interface HomeAssistant {
 export type TabId = "home" | "sound" | "timers" | "system";
 export const TAB_IDS: readonly TabId[] = ["home", "sound", "timers", "system"];
 
+/** The layouts each tab offers, the first one being the default. */
+export const TAB_LAYOUTS = {
+  home: ["classic", "remote", "media"],
+  sound: ["classic", "mixer", "cards"],
+  timers: ["classic", "kitchen", "compact"],
+  system: ["list", "map", "health"],
+} as const satisfies Record<TabId, readonly string[]>;
+
+export type LayoutOf<T extends TabId> = (typeof TAB_LAYOUTS)[T][number];
+/** The chosen layout of every tab. */
+export type TabLayouts = { [T in TabId]: LayoutOf<T> };
+
 /** The YAML config as the user writes it. Only `type` is required (the bar is found if `entity` is left out). */
 export interface JblBarCardConfig {
   type: string;
@@ -120,6 +132,8 @@ export interface JblBarCardConfig {
    * (button.jbl_recent_*) are not tied to a device and belong to the first bar HA loaded.
    */
   recent?: boolean;
+  /** Layout per tab, for example { sound: "mixer" }. Missing tabs use their first layout. */
+  layouts?: Partial<Record<TabId, string>>;
 }
 
 /** The config after validation and defaults. */
@@ -131,6 +145,7 @@ export interface NormalizedConfig {
   default_tab: TabId;
   compact: boolean;
   recent: boolean;
+  layouts: TabLayouts;
 }
 
 /* ------------------------------------------------------------------ */

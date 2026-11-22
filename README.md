@@ -44,6 +44,8 @@ The bar runs one command at a time, so every control follows the same rules:
 - Anything your bar, remote or integration version does not have is hidden.
 - English, Ukrainian and French, following your Home Assistant language. Light and dark themes,
   from 300 px wide.
+- Three layouts for every tab, chosen per tab: see [Layouts](#layouts). The descriptions below
+  are of the default layouts; the others show the same information and controls.
 
 ### Home
 
@@ -86,10 +88,12 @@ The bar runs one command at a time, so every control follows the same rules:
 
 ### System
 
+The default `list` layout:
+
 - Low rear battery warning (below 20 %) naming the speaker, and how to fix it (dock the rears to
   charge them).
-- Tiles: CPU, memory, temperature, Wi-Fi signal, uptime, mode after standby. Tap a tile for its
-  details. Wi-Fi signal and uptime are disabled in Home Assistant by default; the card says how to
+- Gauges for CPU, memory and temperature; Wi-Fi signal, uptime and mode after standby as list
+  rows. Tap one for its details. Wi-Fi signal and uptime are disabled in Home Assistant by default; the card says how to
   enable them.
 - Bluetooth: connected device, Connected badge, **Pair a device** (only on the Bluetooth source;
   the card offers to switch to it).
@@ -179,8 +183,36 @@ entity: media_player.jbl_bar_9_1
 | `default_tab` | string  | `home`                            | Tab shown when the dashboard opens. |
 | `compact`     | boolean | `false`                           | Home only, without tabs. |
 | `recent`      | boolean | `false`                           | Show the recent timers and messages even when you have several JBL bars. Those buttons belong to the first bar Home Assistant loaded, so turn this on only on that bar's card. |
+| `layouts`     | map     | the first layout of every tab     | Layout per tab, for example `layouts: {sound: mixer, system: health}`. See [Layouts](#layouts). |
 
-Every option is also in the visual editor.
+Every option is also in the visual editor (layouts under **Tab layouts**).
+
+### Layouts
+
+Every tab comes in three layouts. They show the same information and run the same actions with the
+same rules (one command at a time, the reason next to anything that cannot run now); only the look
+differs. Pick one per tab:
+
+```yaml
+type: custom:jbl-bar-card
+layouts:
+  home: remote      # classic | remote | media
+  sound: mixer      # classic | mixer | cards
+  timers: kitchen   # classic | kitchen | compact
+  system: health    # list | map | health
+```
+
+| Tab | Layouts (the first one is the default) |
+|-----|------------------------------------------|
+| Home | `classic`: room picture, source, volume slider, chips. `remote`: big keys like the JBL remote, with a volume rocker, power and mute. `media`: a media player with now playing and a volume knob. |
+| Sound | `classic`: segmented levels and vertical EQ sliders. `mixer`: every level, EQ band and the bass offset as faders on one console. `cards`: a card per setting with − / +, and an EQ curve you drag by its points. |
+| Timers | `classic`: timers, messages and the clock in one list. `kitchen`: the next timer as a big countdown ring, big quick-start buttons, messages folded under Display. `compact`: sub-tabs for timers, messages and the clock, with dense rows. |
+| System | `list`: gauges and one compact settings-style list. `map`: the speakers as a picture you tap for their actions. `health`: a health summary with a card per device and diagnostics. |
+
+<img src="docs/images/layouts-home.png" alt="Home layouts: classic, remote, media">
+<img src="docs/images/layouts-sound.png" alt="Sound layouts: classic, mixer, cards">
+<img src="docs/images/layouts-timers.png" alt="Timers layouts: classic, kitchen, compact">
+<img src="docs/images/layouts-system.png" alt="System layouts: list, map, health">
 
 ### Examples
 

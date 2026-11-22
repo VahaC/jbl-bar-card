@@ -4,7 +4,7 @@ import { property, state } from "lit/decorators.js";
 import { EDITOR_TAG } from "./config";
 import { DOMAIN, findBars } from "./discovery";
 import { langOf, makeTranslate } from "./i18n";
-import { TAB_IDS } from "./types";
+import { TAB_IDS, TAB_LAYOUTS } from "./types";
 import type { HomeAssistant, JblBarCardConfig, TabId, Translate } from "./types";
 
 /**
@@ -36,6 +36,17 @@ export function cleanConfig(config: JblBarCardConfig): JblBarCardConfig {
     if (value === undefined || value === "" || value === null) delete out[key];
   }
   if (out.compact === false) delete out.compact;
+  if (out.layouts && typeof out.layouts === "object") {
+    // Keep only layouts that differ from the tab's default (its first layout).
+    const layouts = Object.fromEntries(
+      Object.entries(out.layouts as Record<string, unknown>).filter(
+        ([tab, value]) =>
+          (TAB_IDS as string[]).includes(tab) && typeof value === "string" && value !== TAB_LAYOUTS[tab as TabId][0],
+      ),
+    );
+    if (Object.keys(layouts).length) out.layouts = layouts;
+    else delete out.layouts;
+  }
   if (out.recent === false) delete out.recent;
   if (Array.isArray(out.tabs)) {
     let tabs = TAB_IDS.filter((tab) => (out.tabs as string[]).includes(tab));
@@ -87,6 +98,20 @@ export class JblBarCardEditor extends LitElement {
           ]),
       {
         type: "expandable",
+        name: "layouts",
+        title: t("editor.layouts"),
+        schema: (compact ? (["home"] as TabId[]) : tabs).map((tab) => ({
+          name: tab,
+          selector: {
+            select: {
+              mode: "dropdown",
+              options: TAB_LAYOUTS[tab].map((layout) => ({ value: layout, label: t(`layout.${tab}.${layout}`) })),
+            },
+          },
+        })),
+      },
+      {
+        type: "expandable",
         name: "",
         title: t("editor.advanced"),
         flatten: true,
@@ -108,14 +133,21 @@ export class JblBarCardEditor extends LitElement {
     if (this._haForm === undefined) return html`<div class="loading">${t("editor.loading")}</div>`;
     const tabs = (this._config.tabs?.length ? TAB_IDS.filter((tab) => this._config!.tabs!.includes(tab)) : [...TAB_IDS]) as TabId[];
     const defaultTab = this._config.default_tab && tabs.includes(this._config.default_tab) ? this._config.default_tab : tabs[0];
-    const data = { ...this._config, tabs, default_tab: defaultTab };
+    const layouts = Object.fromEntries(
+      TAB_IDS.map((tab) => [tab, this._config!.layouts?.[tab] ?? TAB_LAYOUTS[tab][0]]),
+    ) as Record<TabId, string>;
+    const data = { ...this._config, tabs, default_tab: defaultTab, layouts };
     if (this._haForm) {
       return html`<ha-form
         .hass=${this.hass}
         .data=${data}
         .schema=${this._schema(t, this._config.compact === true, tabs)}
         .computeLabel=${(schema: { name: string; title?: string }) =>
-          schema.name ? t(`editor.${schema.name}`) : (schema.title ?? "")}
+          schema.title
+            ? schema.title
+            : (TAB_IDS as string[]).includes(schema.name)
+              ? t(`tab.${schema.name}`)
+              : t(`editor.${schema.name}`)}
         .computeHelper=${(schema: { name: string }) =>
           schema.name === "name" ? t("editor.name_helper") : schema.name === "recent" ? t("editor.recent_helper") : undefined}
         @value-changed=${(ev: CustomEvent<{ value: FormData }>) => this._update(ev.detail.value)}
@@ -179,6 +211,26 @@ export class JblBarCardEditor extends LitElement {
                 )}
               </select>
             </label>`}
+      <fieldset>
+        <legend>${t("editor.layouts")}</legend>
+        ${(data.compact ? (["home"] as TabId[]) : tabs).map(
+          (tab) =>
+            html`<label
+              >${t(`tab.${tab}`)}
+              <select
+                @change=${(ev: Event) =>
+                  this._update({ layouts: { ...data.layouts, [tab]: (ev.target as HTMLSelectElement).value } })}
+              >
+                ${TAB_LAYOUTS[tab].map(
+                  (layout) =>
+                    html`<option value=${layout} ?selected=${(data.layouts?.[tab] ?? TAB_LAYOUTS[tab][0]) === layout}>
+                      ${t(`layout.${tab}.${layout}`)}
+                    </option>`,
+                )}
+              </select>
+            </label>`,
+        )}
+      </fieldset>
       <label class="check"
         ><input
           type="checkbox"

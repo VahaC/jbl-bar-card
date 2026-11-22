@@ -12,6 +12,9 @@ describe("card shell", () => {
     expect(m.$(".name")?.textContent).toBe("JBL Bar 9.1");
     expect(m.$(".subtitle")?.textContent).toBe("Bluetooth · Standard · PCM 2.0");
     expect(m.$(".power")?.getAttribute("aria-pressed")).toBe("true");
+    // A fixed name with aria-pressed (no "Turn off, pressed"); the action is the tooltip.
+    expect(m.$(".power")?.getAttribute("aria-label")).toBe("Power");
+    expect(m.$(".power")?.getAttribute("title")).toBe("Turn off");
     expect(m.$$(".tab").map((t) => t.textContent?.trim())).toEqual(["Home", "Sound", "Timers", "System"]);
   });
 
@@ -34,7 +37,7 @@ describe("card shell", () => {
   it("translates to Ukrainian and French", async () => {
     const uk = await mountCard({}, newBar({ language: "uk" }));
     expect(uk.$$(".tab").map((t) => t.textContent?.trim())).toEqual(["Головна", "Звук", "Таймери", "Система"]);
-    expect(uk.text()).toContain("Тилові зняті");
+    expect(uk.text()).toContain("Задні колонки зняті");
     cleanup();
     const fr = await mountCard({}, newBar({ language: "fr" }));
     expect(fr.text()).toContain("Enceintes arrière détachées");
@@ -142,9 +145,13 @@ describe("Home tab", () => {
 
   it("toggles mute, smart mode and night", async () => {
     const m = await mountCard();
+    expect(m.$(".icon-btn.mute")?.getAttribute("aria-label")).toBe("Mute");
     m.$(".icon-btn.mute")!.click();
     await settle(m);
     expect(m.bar.muted).toBe(true);
+    expect(m.$(".icon-btn.mute")?.getAttribute("aria-pressed")).toBe("true");
+    expect(m.$(".icon-btn.mute")?.getAttribute("aria-label")).toBe("Mute");
+    expect(m.$(".icon-btn.mute")?.getAttribute("title")).toBe("Unmute");
     const chips = m.$$(".chip");
     expect(chips.map((c) => c.textContent?.trim())).toEqual(["Smart mode", "Night"]);
     chips[1].click();
@@ -192,6 +199,25 @@ describe("Home tab", () => {
     expect(m.text()).toContain("The soundbar is in standby.");
     expect(m.$$(".seg button").every((b) => (b as HTMLButtonElement).disabled)).toBe(true);
     expect((m.$("input.slider") as HTMLInputElement).disabled).toBe(true);
+  });
+
+  it("explains a disabled mode chip", () => {
+    const ctx = tabContext();
+    const night = ctx.entities.night!;
+    const host = document.createElement("div");
+    render(
+      renderHomeTab({
+        ...ctx,
+        stateOf: (id) => {
+          const st = ctx.stateOf(id);
+          return st && st.entity_id === night ? { ...st, state: "unavailable" } : st;
+        },
+      }),
+      host,
+    );
+    const chip = Array.from(host.querySelectorAll<HTMLButtonElement>(".chip")).find((c) => c.textContent?.includes("Night"))!;
+    expect(chip.disabled).toBe(true);
+    expect(host.querySelector(".mode-reason")?.textContent).toBe("Night is unavailable right now.");
   });
 
   it("renders as a plain function from a TabContext", () => {

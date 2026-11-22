@@ -164,7 +164,7 @@ describe("card shell: errors", () => {
 describe("card shell: confirmation dialog", () => {
   it("takes focus, closes on Escape and gives focus back to its opener", async () => {
     const m = await mountCard({ default_tab: "system" });
-    const restart = m.$$(".restart button").find((b) => b.textContent?.includes("Restart")) as HTMLButtonElement;
+    const restart = m.$(".sys-b-restart") as HTMLButtonElement;
     restart.focus();
     restart.click();
     await m.card.updateComplete;
@@ -221,6 +221,13 @@ describe("config errors and the editor", () => {
       tabs: ["sound", "timers"],
       default_tab: "timers",
     });
+  });
+
+  it("keeps only the layouts that differ from each tab's default", () => {
+    expect(
+      cleanConfig({ type: "x", layouts: { home: "classic", sound: "mixer", timers: "classic", system: "list" } }),
+    ).toEqual({ type: "x", layouts: { sound: "mixer" } });
+    expect(cleanConfig({ type: "x", layouts: { home: "classic", system: "list" } })).toEqual({ type: "x" });
   });
 });
 

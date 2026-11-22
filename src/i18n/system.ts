@@ -95,12 +95,12 @@ export const strings: TabStrings = {
     turn_on_first: "Спершу увімкніть саундбар.",
     unavailable: "Зараз недоступно.",
 
-    "battery.title": "Тилові колонки розряджаються",
-    "battery.left": "Тилова ліва: {level}",
-    "battery.right": "Тилова права: {level}",
+    "battery.title": "Задні колонки розряджаються",
+    "battery.left": "Ліва задня: {level}",
+    "battery.right": "Права задня: {level}",
     "battery.fix":
-      "Поставте обидві тилові колонки на краї саундбара: вони заряджаються, коли стоять на ньому. Коли зарядяться, зніміть їх знову для об'ємного звуку.",
-    "battery.charging": "Тилові колонки стоять на саундбарі й заряджаються.",
+      "Поставте обидві задні колонки на краї саундбара: вони заряджаються, коли стоять на ньому. Коли зарядяться, зніміть їх знову для об'ємного звуку.",
+    "battery.charging": "Задні колонки стоять на саундбарі й заряджаються.",
 
     cpu: "Процесор",
     memory: "Пам'ять",
@@ -119,7 +119,7 @@ export const strings: TabStrings = {
     mode_after_standby_hint: "Режим звуку, у якому саундбар прокидається з режиму очікування.",
     "disabled.summary": "{names}: вимкнено в Home Assistant",
     "disabled.how":
-      "Ці датчики типово вимкнені. Щоб показати датчик, відкрийте Налаштування → Пристрої та служби → JBL Bar 9.1 і сторінку саундбара. У блоці «Діагностика» розгорніть приховані сутності, виберіть датчик, відкрийте його налаштування (шестерня), увімкніть «Увімкнено» й натисніть «Оновити». Він з'явиться тут приблизно за 30 секунд.",
+      "Ці датчики типово вимкнені. Щоб показати датчик, відкрийте «Налаштування» → «Пристрої та служби» → JBL Bar 9.1 і сторінку саундбара. У блоці «Діагностика» розгорніть приховані сутності, виберіть датчик, відкрийте його налаштування (шестерня), увімкніть «Увімкнено» й натисніть «Оновити». Він з'явиться тут приблизно за 30 секунд.",
 
     "bt.title": "Bluetooth",
     "bt.no_device": "Немає підключеного пристрою",
@@ -145,11 +145,11 @@ export const strings: TabStrings = {
     "cal.retry": "Спробувати ще раз",
     "cal.running": "Вимірювання…",
     "cal.hint_step1":
-      "Крок 1: поставте обидві тилові колонки біля місця, де ви слухаєте. У кімнаті має бути тихо: саундбар вимірює близько 35 секунд.",
+      "Крок 1: поставте обидві задні колонки біля місця, де ви слухаєте. У кімнаті має бути тихо: саундбар вимірює близько 35 секунд.",
     "cal.hint_step2":
-      "Крок 2: поставте тилові колонки туди, де вони стоятимуть, — позаду або обабіч вас. У кімнаті має бути тихо: саундбар вимірює близько 35 секунд.",
+      "Крок 2: поставте задні колонки туди, де вони стоятимуть, — позаду або обабіч вас. У кімнаті має бути тихо: саундбар вимірює близько 35 секунд.",
     "cal.hint_running": "Не шуміть, доки саундбар не закінчить (близько 35 секунд).",
-    "cal.needs_undock": "Спершу зніміть обидві тилові колонки із саундбара.",
+    "cal.needs_undock": "Спершу зніміть обидві задні колонки із саундбара.",
     "cal.wait_sub": "Зачекайте, доки закінчиться сполучення сабвуфера.",
 
     "sub.title": "Сабвуфер",
@@ -202,17 +202,17 @@ export const strings: TabStrings = {
     mode_after_standby_hint: "Le mode sonore que la barre de son reprend en sortant de veille.",
     "disabled.summary": "{names} : désactivé dans Home Assistant",
     "disabled.how":
-      "Ces capteurs sont désactivés par défaut. Pour en afficher un, ouvrez Paramètres → Appareils et services → JBL Bar 9.1, puis la page de l'appareil. Sous Diagnostic, dépliez les entités masquées, choisissez le capteur, ouvrez ses paramètres (roue dentée), cochez Activé et choisissez Mettre à jour. Il apparaît ici au bout d'environ 30 secondes.",
+      "Ces capteurs sont désactivés par défaut. Pour en afficher un, ouvrez « Paramètres » → « Appareils et services » → JBL Bar 9.1, puis la page de l'appareil. Sous « Diagnostic », dépliez les entités masquées, choisissez le capteur, ouvrez ses paramètres (roue dentée), activez l'option « Activé » et choisissez « Mettre à jour ». Il apparaît ici au bout d'environ 30 secondes.",
 
     "bt.title": "Bluetooth",
     "bt.no_device": "Aucun appareil connecté",
     "bt.connected": "Connecté",
     "bt.not_connected": "Non connecté",
-    "bt.pair": "Associer un appareil",
+    "bt.pair": "Appairer un appareil",
     "bt.switch": "Passer en Bluetooth",
-    "bt.needs_source": "L'association ne fonctionne que lorsque la source est Bluetooth.",
+    "bt.needs_source": "L'appairage ne fonctionne que lorsque la source est Bluetooth.",
     "bt.pairing_hint":
-      "La barre de son est prête à être associée. Ouvrez les réglages Bluetooth de votre téléphone ou tablette et choisissez la barre de son dans la liste.",
+      "La barre de son est prête pour l'appairage. Ouvrez les réglages Bluetooth de votre téléphone ou tablette et choisissez la barre de son dans la liste.",
 
     "cal.title": "Calibrage du surround",
     "cal.idle": "Inactif",
@@ -233,17 +233,17 @@ export const strings: TabStrings = {
       "Étape 2 : placez les enceintes arrière à leur emplacement définitif, derrière ou à côté de vous. Gardez le silence : la barre de son mesure pendant environ 35 secondes.",
     "cal.hint_running": "Gardez le silence jusqu'à la fin de la mesure (environ 35 secondes).",
     "cal.needs_undock": "Détachez d'abord les deux enceintes arrière de la barre de son.",
-    "cal.wait_sub": "Attendez la fin de l'association du caisson de basses.",
+    "cal.wait_sub": "Attendez la fin de l'appairage du caisson de basses.",
 
     "sub.title": "Caisson de basses",
     "sub.connected": "Connecté",
     "sub.not_connected": "Non connecté",
     "sub.reconnecting": "Reconnexion",
-    "sub.pairing": "Association",
+    "sub.pairing": "Appairage",
     "sub.no_status": "Pas d'état récent",
-    "sub.pair": "Associer le caisson",
+    "sub.pair": "Appairer le caisson de basses",
     "sub.pairing_hint":
-      "Maintenez maintenant le bouton d'association du caisson de basses jusqu'à ce que son voyant clignote rapidement en blanc. La barre de son attend jusqu'à 3 minutes.",
+      "Maintenez maintenant le bouton d'appairage du caisson de basses jusqu'à ce que son voyant clignote rapidement en blanc. La barre de son attend jusqu'à 3 minutes.",
     "sub.wait_cal": "Attendez la fin du calibrage.",
 
     "restart.title": "Redémarrage",

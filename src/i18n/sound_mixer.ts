@@ -1,0 +1,55 @@
+import type { TabStrings } from "./index";
+
+/** Strings of the "mixer" layout of the sound tab, looked up as "sound_mixer.<key>". Keep en, uk and fr in sync. */
+export const strings: TabStrings = {
+  en: {
+    console: "Sound mixer",
+    levels: "Levels",
+    db: "dB",
+    short_bass: "Bass",
+    short_center: "Center",
+    short_atmos: "Atmos",
+    short_rear: "Rear",
+    short_bass_offset: "Bass ±",
+    // Band names for the narrow strips: the unit is written once, in the scale. Shortened level
+    // values come from the model (SoundLevelOption.shortLabel).
+    hz: "Hz",
+    band_0: "125",
+    band_1: "500",
+    band_2: "2k",
+    band_3: "4k",
+    band_4: "8k",
+  },
+  uk: {
+    console: "Мікшер звуку",
+    levels: "Рівні",
+    db: "дБ",
+    short_bass: "Баси",
+    short_center: "Центр",
+    short_atmos: "Atmos",
+    short_rear: "Задні",
+    short_bass_offset: "Баси ±",
+    hz: "Гц",
+    band_0: "125",
+    band_1: "500",
+    band_2: "2к",
+    band_3: "4к",
+    band_4: "8к",
+  },
+  fr: {
+    console: "Table de mixage",
+    levels: "Niveaux",
+    db: "dB",
+    short_bass: "Basses",
+    short_center: "Centre",
+    short_atmos: "Atmos",
+    short_rear: "Arrière",
+    short_bass_offset: "Basses ±",
+    hz: "Hz",
+    band_0: "125",
+    band_1: "500",
+    band_2: "2k",
+    band_3: "4k",
+    band_4: "8k",
+  },
+};

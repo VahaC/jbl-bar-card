@@ -12,6 +12,7 @@ import { JblServices } from "./services";
 import { isBlankState } from "./state";
 import { cardStyles, sharedStyles } from "./styles";
 import { homeStyles, renderHomeTab } from "./tabs/home";
+import { isBarOn, powerToggle } from "./tabs/home-model";
 import { renderSoundTab, soundStyles } from "./tabs/sound";
 import { calibrationPhase, renderSystemTab, systemStyles } from "./tabs/system";
 import { renderTimersTab, timersStyles } from "./tabs/timers";
@@ -43,8 +44,6 @@ const TABS: Record<TabId, { icon: string; render: TabRenderer }> = {
 /** How long an error stays in the strip at the top. Errors shown next to their control stay until dismissed. */
 const ERROR_TTL = 20000;
 const MAX_ERRORS = 3;
-const OFF_STATES = new Set(["off", "unavailable", "unknown", "standby"]);
-
 interface CardError {
   id: number;
   message: string;
@@ -58,9 +57,8 @@ interface DialogState extends ConfirmOptions {
   resolve: (ok: boolean) => void;
 }
 
-export function isBarOn(state: HassEntity | undefined): boolean {
-  return state !== undefined && !OFF_STATES.has(state.state);
-}
+// isBarOn lives in the Home model, which shares the power toggle with the header.
+export { isBarOn };
 
 export class JblBarCard extends LitElement {
   static override styles = [sharedStyles, cardStyles, homeStyles, soundStyles, timersStyles, systemStyles];
@@ -575,19 +573,9 @@ export class JblBarCard extends LitElement {
 
   private _renderHeader(ctx: TabContext): TemplateResult {
     const { t } = ctx;
-    const mp = ctx.stateOf(ctx.entities.media_player);
-    const on = isBarOn(mp);
     const mediaPlayer = ctx.entities.media_player;
-    const pending = ctx.isPending("header.power");
-    const togglePower = (): void => {
-      // A second tap while the first is on its way would toggle the power back.
-      if (ctx.isPending("header.power")) return;
-      void ctx.call("header.power", () => (on ? ctx.services.turnOff() : ctx.services.turnOn()), {
-        value: !on,
-        until: (hass) => isBarOn(hass.states[mediaPlayer]) === !on,
-        timeoutMs: 30000,
-      });
-    };
+    // The same toggle as the Home model's power key: one pending key and one set of rules.
+    const power = powerToggle(ctx);
     return html`
       <div class="header">
         <div class="badge-jbl" aria-hidden="true">JBL</div>
@@ -596,15 +584,15 @@ export class JblBarCard extends LitElement {
           <span class="subtitle">${this._subtitle(ctx)}</span>
         </button>
         <button
-          class="icon-btn power ${on ? "on" : ""} ${pending ? "pending" : ""}"
-          ?disabled=${ctx.barUnavailable}
-          aria-pressed=${String(on)}
-          aria-busy=${pending ? "true" : "false"}
-          aria-label=${t(on ? "header.power_off" : "header.power_on")}
-          title=${t(on ? "header.power_off" : "header.power_on")}
-          @click=${togglePower}
+          class="icon-btn power ${power.on ? "on" : ""} ${power.pending ? "pending" : ""}"
+          ?disabled=${!power.enabled}
+          aria-pressed=${String(power.on)}
+          aria-busy=${power.pending ? "true" : "false"}
+          aria-label=${power.name}
+          title=${power.label}
+          @click=${power.run}
         >
-          <ha-icon .icon=${"mdi:power"}></ha-icon>
+          <ha-icon .icon=${power.icon}></ha-icon>
         </button>
       </div>
     `;

@@ -60,10 +60,17 @@ const bar = new MockBar({ language: params.get("lang") ?? "en", log });
 if (params.get("docked") === "1") bar.update((b) => (b.docked = true));
 const firstTab = (params.get("tab") ?? undefined) as TabId | undefined;
 
+// ?layouts=home:remote,sound:mixer picks the tab layouts of every demo card.
+const layouts = Object.fromEntries(
+  (params.get("layouts") ?? "")
+    .split(",")
+    .map((pair) => pair.split(":"))
+    .filter((pair) => pair.length === 2 && pair[0] && pair[1]),
+) as JblBarCardConfig["layouts"];
 const configs: Record<string, JblBarCardConfig> = {
-  full: { type: "custom:jbl-bar-card", entity: MEDIA_PLAYER, ...(firstTab ? { default_tab: firstTab } : {}) },
-  narrow: { type: "custom:jbl-bar-card", entity: MEDIA_PLAYER, default_tab: "timers" },
-  compact: { type: "custom:jbl-bar-card", entity: MEDIA_PLAYER, compact: true, name: "Living room" },
+  full: { type: "custom:jbl-bar-card", entity: MEDIA_PLAYER, layouts, ...(firstTab ? { default_tab: firstTab } : {}) },
+  narrow: { type: "custom:jbl-bar-card", entity: MEDIA_PLAYER, layouts, default_tab: firstTab ?? "timers" },
+  compact: { type: "custom:jbl-bar-card", entity: MEDIA_PLAYER, layouts, compact: true, name: "Living room" },
 };
 
 const cards: JblBarCard[] = [];

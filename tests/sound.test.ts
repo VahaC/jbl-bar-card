@@ -116,6 +116,15 @@ describe("Sound tab: levels", () => {
     expect(buttons.every((b) => b.disabled)).toBe(true);
     expect(host.querySelector(".level-rear .hint")?.textContent).toContain("does not say whether");
   });
+
+  it("does not repeat the bar's unreachable state under every level", async () => {
+    const bar = newBar();
+    bar.reachable = false;
+    bar.update(() => undefined);
+    const m = await mountSound(bar);
+    expect(seg(m, "bass").every((b) => b.disabled)).toBe(true);
+    expect(m.$$(".level .hint")).toHaveLength(0);
+  });
 });
 
 describe("Sound tab: audio sync", () => {
@@ -310,6 +319,18 @@ describe("Sound tab: missing entities and languages", () => {
       },
     };
     expect(renderCtx(ctx).textContent).toContain("This soundbar does not report any sound settings.");
+  });
+
+  it("renders the layout chosen in the config", () => {
+    const classic = renderCtx(tabContext());
+    expect(classic.querySelector(".sound .level-bass")).not.toBeNull();
+    expect(classic.querySelector(".sound-mixer, .sound-cards")).toBeNull();
+    for (const layout of ["mixer", "cards"] as const) {
+      const host = renderCtx(tabContext(newBar(), { layouts: { sound: layout } }));
+      expect(host.querySelector(`.sound-${layout}`)).not.toBeNull();
+      expect(host.querySelector(`.sound-${layout}-note`)).toBeNull();
+      expect(host.querySelector(".sound .level-bass")).toBeNull();
+    }
   });
 
   it("translates to Ukrainian and French", async () => {

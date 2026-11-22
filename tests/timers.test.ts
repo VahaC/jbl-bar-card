@@ -487,6 +487,20 @@ describe("Timers tab: clock and missing entities", () => {
     expect(host.querySelector(".clock-when")).toBeNull();
   });
 
+  it("puts the model's reasons in the titles of disabled clock controls", () => {
+    const ctx = tabContext();
+    const host = document.createElement("div");
+    render(renderTimersTab({ ...ctx, barUnavailable: true }), host);
+    expect(host.querySelector(".clock-switch")?.getAttribute("title")).toBe("The soundbar is unreachable.");
+    expect([...host.querySelectorAll(".clock-when [role=radio]")].map((o) => o.getAttribute("title"))).toEqual([
+      "The soundbar is unreachable.",
+      "The soundbar is unreachable.",
+    ]);
+    render(renderTimersTab(ctx), host);
+    expect(host.querySelector(".clock-switch")?.hasAttribute("title")).toBe(false);
+    expect([...host.querySelectorAll(".clock-when [role=radio]")].map((o) => o.getAttribute("title"))).toEqual(["In standby", "Always"]);
+  });
+
   it("disables actions while the bar is unreachable", async () => {
     const bar = newBar();
     bar.reachable = false;
@@ -636,5 +650,21 @@ describe("Timers tab: recent labels", () => {
   it("shows translated chips in a Ukrainian UI", async () => {
     const m = await open({}, newBar({ language: "uk" }));
     expect(m.$$(".recent-timers .chip.restart").map((c) => c.textContent?.trim())).toContain("EGGS · 7 хв");
+  });
+});
+
+describe("Timers tab: layouts", () => {
+  it("renders the layout chosen in the config", async () => {
+    const classic = await open();
+    expect(classic.$(".timers")).not.toBeNull();
+    expect(classic.$(".timers-kitchen, .timers-compact")).toBeNull();
+    cleanup();
+    for (const name of ["kitchen", "compact"] as const) {
+      const m = await open({ layouts: { timers: name } });
+      expect(m.$(`.timers-${name}`)).not.toBeNull();
+      // Each layout renders its own markup, not the classic list.
+      expect(m.$(`.timers-${name} .timers-list`)).toBeNull();
+      cleanup();
+    }
   });
 });
