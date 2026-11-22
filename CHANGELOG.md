@@ -6,6 +6,8 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-11-22
+
 ### Fixed
 
 - Sound, `mixer` layout: on cards wider than about 400 px the faders now stretch to the card's
