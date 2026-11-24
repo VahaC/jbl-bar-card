@@ -129,33 +129,40 @@ The default `list` layout:
 
 ## Installation
 
-### Marketplace (Home Assistant 2026.11 and newer)
+### Marketplace or HACS (recommended)
 
-Since 2026.11, HACS is built into Home Assistant as the **Marketplace**. Click **Open in
-Marketplace** at the top of this page, or add the repository by hand:
+JBL Bar Card is in the default HACS catalog, so you can find it by name:
 
-1. Go to **Settings → Marketplace** and select **Add from link** in the upper-right corner.
-2. Under **GitHub link**, enter `VahaC/jbl-bar-card`. If you are asked for the type, choose
-   **Dashboard**. Select **Add**.
-3. Open **JBL Bar Card** and install it. The Marketplace adds the dashboard resource for you.
-   If you manage dashboard resources in YAML, add the resource the install dialog shows,
-   `/local/community/jbl-bar-card/jbl-bar-card.js` with type `module`.
-4. Reload the browser.
-
-### HACS (before Home Assistant 2026.11)
-
-1. In HACS, open the menu (three dots) and choose **Custom repositories**.
-2. Repository: `https://github.com/VahaC/jbl-bar-card`, type: **Dashboard**. Add it.
-3. Find **JBL Bar Card** in HACS and download it.
-4. Reload the browser. HACS adds the dashboard resource for you in storage mode. In YAML mode,
-   add it yourself:
+1. Open **Settings → Marketplace** (Home Assistant 2026.11 and newer, where HACS is built in) or
+   **HACS** (older versions). You can also click **Open in Marketplace** at the top of this page
+   to go straight to the card.
+2. Search for **JBL Bar Card**, open it and install (download) it.
+3. The dashboard resource is added for you in storage mode. If you manage dashboard resources in
+   YAML, add the one the install dialog shows, with type `module`:
 
    ```yaml
    lovelace:
      resources:
-       - url: /hacsfiles/jbl-bar-card/jbl-bar-card.js
+       # Marketplace (2026.11 and newer)
+       - url: /local/community/jbl-bar-card/jbl-bar-card.js
          type: module
+       # HACS (older versions)
+       # - url: /hacsfiles/jbl-bar-card/jbl-bar-card.js
+       #   type: module
    ```
+
+4. Reload the browser.
+
+### As a custom repository (fallback)
+
+Use this only if the search does not find the card, for example in an older HACS that has not
+refreshed its catalog yet. Add the repository by hand, then continue with step 2 above:
+
+- **Marketplace**: **Settings → Marketplace → Add from link** (upper-right corner). Under
+  **GitHub link**, enter `VahaC/jbl-bar-card`; if you are asked for the type, choose
+  **Dashboard**. Select **Add**.
+- **HACS**: menu (three dots) → **Custom repositories**. Repository:
+  `https://github.com/VahaC/jbl-bar-card`, type: **Dashboard**. Select **Add**.
 
 ### Manual
 

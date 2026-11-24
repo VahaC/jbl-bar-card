@@ -6,6 +6,12 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Changed
+
+- README: the card is now in the default HACS catalog, so installation starts with searching for
+  **JBL Bar Card** in the Marketplace (Home Assistant 2026.11 and newer) or HACS. Adding it as a
+  custom repository is kept as a fallback.
+
 ## [0.2.1] - 2026-11-22
 
 ### Fixed
