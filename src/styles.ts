@@ -672,10 +672,29 @@ export const cardStyles = css`
     text-overflow: ellipsis;
     white-space: nowrap;
   }
+  .tab {
+    border-radius: 10px 10px 0 0;
+    transition: background 140ms ease, color 140ms ease, box-shadow 160ms ease, border-color 160ms ease;
+  }
+  .tab:hover {
+    color: var(--jbl-text, var(--primary-text-color));
+    background: rgba(var(--jbl-accent-rgb), 0.1);
+    border-bottom-color: rgba(var(--jbl-accent-rgb), 0.55);
+    box-shadow: 0 -6px 16px rgba(0, 0, 0, 0.25);
+  }
+  .tab:focus-visible {
+    outline: 2px solid rgba(var(--jbl-accent-rgb), 0.6);
+    outline-offset: -2px;
+  }
   .tab[aria-selected="true"] {
     color: var(--jbl-accent-text);
     border-bottom-color: var(--jbl-accent);
     font-weight: 500;
+  }
+  .tab[aria-selected="true"]:hover {
+    color: var(--jbl-accent-text);
+    border-bottom-color: var(--jbl-accent);
+    background: rgba(var(--jbl-accent-rgb), 0.14);
   }
   @container (max-width: 360px) {
     .tab .tab-label {
