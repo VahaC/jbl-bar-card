@@ -1,5 +1,5 @@
 import { DOMAIN } from "./discovery";
-import type { HomeAssistant, HassServiceTarget } from "./types";
+import type { CycleLevel, HomeAssistant, HassServiceTarget } from "./types";
 
 /** The remote's volume range: volume_level = volume / VOLUME_MAX. */
 export const VOLUME_MAX = 32;
@@ -174,6 +174,12 @@ export class JblServices {
     private readonly hass: HomeAssistant,
     /** The bar's media_player: the target of every jbl_bar_91 service. */
     readonly mediaPlayer: string,
+    /** Top of the bar's volume scale (32 on the Bar 9.1, 100 on JBL One bars). */
+    readonly volumeMax: number = VOLUME_MAX,
+    /** Levels set by stepping a "next level" button (JBL One Atmos), by the sensor used as the role entity. */
+    private readonly cycles: Record<string, CycleLevel> = {},
+    /** The latest hass, for reading a cycled level between button presses. */
+    private readonly latestHass: () => HomeAssistant = () => hass,
   ) {}
 
   private run(domain: string, service: string, data: Record<string, unknown>, target: HassServiceTarget): Promise<unknown> {
@@ -199,8 +205,8 @@ export class JblServices {
   }
   /** Set the volume on the bar's own 0..32 scale (the integration steps there one action at a time). */
   setVolume(step: number): Promise<unknown> {
-    const clamped = Math.min(VOLUME_MAX, Math.max(0, Math.round(step)));
-    return this.bar("media_player", "volume_set", { volume_level: clamped / VOLUME_MAX });
+    const clamped = Math.min(this.volumeMax, Math.max(0, Math.round(step)));
+    return this.bar("media_player", "volume_set", { volume_level: clamped / this.volumeMax });
   }
   mute(muted: boolean): Promise<unknown> {
     return this.bar("media_player", "volume_mute", { is_volume_muted: muted });
@@ -226,7 +232,36 @@ export class JblServices {
 
   /* ---- generic entity services ---- */
   selectOption(entityId: string, option: string): Promise<unknown> {
+    const cycle = this.cycles[entityId];
+    if (cycle) return this.stepTo(entityId, cycle, option);
     return this.run("select", "select_option", { option }, { entity_id: entityId });
+  }
+
+  /**
+   * Reach `option` on a level that only has a "next level" button: press it once per step,
+   * waiting for the level sensor to move before the next press (the bar runs one key at a time).
+   */
+  private async stepTo(sensor: string, cycle: CycleLevel, option: string): Promise<void> {
+    const target = cycle.options.indexOf(option);
+    if (target < 0) throw new Error(`Unknown level: ${option}`);
+    for (let guard = 0; guard < cycle.options.length; guard++) {
+      const now = this.latestHass().states[sensor]?.state;
+      const index = cycle.options.indexOf(now ?? "");
+      if (index === target) return;
+      await this.press(cycle.button);
+      await this.waitFor(() => this.latestHass().states[sensor]?.state !== now, 6000);
+    }
+  }
+
+  private waitFor(done: () => boolean, timeoutMs: number): Promise<void> {
+    return new Promise((resolve) => {
+      const started = Date.now();
+      const tick = (): void => {
+        if (done() || Date.now() - started > timeoutMs) resolve();
+        else setTimeout(tick, 200);
+      };
+      tick();
+    });
   }
   setNumber(entityId: string, value: number): Promise<unknown> {
     return this.run("number", "set_value", { value }, { entity_id: entityId });
