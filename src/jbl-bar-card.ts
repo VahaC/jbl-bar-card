@@ -2,7 +2,7 @@ import { LitElement, html, nothing } from "lit";
 import type { PropertyValues, TemplateResult } from "lit";
 import { property, state } from "lit/decorators.js";
 import { CARD_TAG, EDITOR_TAG, normalizeConfig, pageTranslate } from "./config";
-import { DOMAIN, discover, findBars, lookupBandIndexes, resolveBar, watchedIds } from "./discovery";
+import { PLATFORMS, discover, findBars, lookupBandIndexes, resolveBar, watchedIds } from "./discovery";
 import { formatDuration, formatNumber, formatTime } from "./format";
 import { dictionary, langOf, makeTranslate } from "./i18n";
 import type { Lang } from "./i18n";
@@ -239,7 +239,7 @@ export class JblBarCard extends LitElement {
     ]
       .map((id) => (hass.states[id] ? "1" : "0"))
       .join("");
-    const key = [hass.entities, mediaPlayer, this._config?.recent, this._bandHints, fixed];
+    const key = [hass.entities, hass.devices, mediaPlayer, this._config?.recent, this._bandHints, fixed];
     if (this._discovered && this._discoveryKey?.every((v, i) => v === key[i])) return this._discovered;
     const entities = discover(hass, mediaPlayer, {
       bandHints: this._bandHints,
@@ -424,7 +424,13 @@ export class JblBarCard extends LitElement {
       action: typeof running?.attributes.action === "string" ? running.attributes.action : null,
       source: typeof running?.attributes.source === "string" ? running.attributes.source : null,
     };
-    const services = new JblServices(hass, entities.media_player);
+    const services = new JblServices(
+      hass,
+      entities.media_player,
+      entities.volumeMax,
+      entities.cycles,
+      () => this.hass ?? hass,
+    );
     return {
       hass,
       config,
@@ -517,7 +523,7 @@ export class JblBarCard extends LitElement {
    */
   private _isJblBar(hass: HomeAssistant, mediaPlayer: string): boolean {
     const entry = hass.entities?.[mediaPlayer];
-    if (entry) return !entry.platform || entry.platform === DOMAIN;
+    if (entry) return !entry.platform || PLATFORMS.includes(entry.platform);
     // No registry loaded at all (very old frontends): trust the configured id.
     return !hass.entities || Object.keys(hass.entities).length === 0;
   }
@@ -568,6 +574,7 @@ export class JblBarCard extends LitElement {
     else if (soundMode === "standard" || smart === "off") parts.push(t("header.mode_standard"));
     const format = ctx.stateOf(ctx.entities.audio_format)?.state;
     if (format && !isBlankState(format)) parts.push(format);
+    else if (ctx.stateOf(ctx.entities.atmos_active)?.state === "on") parts.push("Dolby Atmos");
     return parts.join(" · ");
   }
 
@@ -578,7 +585,9 @@ export class JblBarCard extends LitElement {
     const power = powerToggle(ctx);
     return html`
       <div class="header">
-        <div class="badge-jbl" aria-hidden="true">JBL</div>
+        <div class="badge-jbl" aria-hidden="true">
+          <svg viewBox="0 0 30 14"><text x="15" y="12" text-anchor="middle" textLength="29" lengthAdjust="spacingAndGlyphs">JBL</text></svg>
+        </div>
         <button type="button" class="titles" title=${t("header.details")} @click=${() => ctx.moreInfo(mediaPlayer)}>
           <span class="name">${this._deviceName(ctx)}</span>
           <span class="subtitle">${this._subtitle(ctx)}</span>
@@ -727,12 +736,12 @@ if (!window.customCards.some((card) => card.type === CARD_TAG)) {
   window.customCards.push({
     type: CARD_TAG,
     name: "JBL Bar Card",
-    description: "Control a JBL Bar 9.1: source, volume, sound, timers, display messages and system status.",
+    description: "Control a JBL Bar 9.1 or a JBL One bar (e.g. Bar 1300MK2): source, volume, sound, timers, display messages and system status.",
     preview: true,
     documentationURL: "https://github.com/VahaC/jbl-bar-card",
     getEntitySuggestion: (hass, entityId) => {
       const entry = (hass as HomeAssistant | undefined)?.entities?.[entityId];
-      return entry?.platform === DOMAIN && entityId.startsWith("media_player.")
+      return entry?.platform !== undefined && PLATFORMS.includes(entry.platform) && entityId.startsWith("media_player.")
         ? { config: { type: `custom:${CARD_TAG}`, entity: entityId } }
         : null;
     },

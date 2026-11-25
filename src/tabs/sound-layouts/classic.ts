@@ -29,6 +29,9 @@ const badgeClass = (badge: SoundBadge): string => (badge.tone === "neutral" ? ""
  */
 const ownReason = (level: SoundLevel): string | undefined => (level.reasonKind === "blocked" ? level.reason : undefined);
 
+/** "125 Hz" -> "125", "1 kHz" -> "1k": fits seven bands in one row. */
+const shortFreq = (label: string): string => label.replace(/\s*kHz$/, "k").replace(/\s*Hz$/, "");
+
 function renderLevel(level: SoundLevel): TemplateResult {
   return html`
     <div class="section level level-${level.role}">
@@ -145,7 +148,7 @@ function renderPreset(preset: SoundPreset): TemplateResult {
 
 function renderBands(eq: SoundEq): TemplateResult {
   return html`
-    <div class="eq-bands" role="group" aria-label=${eq.title}>
+    <div class="eq-bands" style="--eq-count: ${eq.bands.length}" role="group" aria-label=${eq.title}>
       ${eq.bands.map(
         (band) => html`
           <div class="eq-band ${band.pending ? "pending" : ""}">
@@ -167,7 +170,7 @@ function renderBands(eq: SoundEq): TemplateResult {
                 @change=${(ev: Event) => band.commit(Number((ev.target as HTMLInputElement).value))}
               />
             </span>
-            <span class="eq-freq">${band.label}</span>
+            <span class="eq-freq" title=${band.label}>${eq.bands.length > 5 ? shortFreq(band.label) : band.label}</span>
           </div>
         `,
       )}
@@ -235,7 +238,7 @@ export const soundClassicStyles = css`
   }
   .eq-bands {
     display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-columns: repeat(var(--eq-count, 5), minmax(0, 1fr));
     gap: 4px;
     padding: 10px 4px;
     border-radius: var(--jbl-radius-sm);

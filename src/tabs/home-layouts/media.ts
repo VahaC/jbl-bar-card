@@ -424,7 +424,7 @@ function chip(c: HomeToggle | HomeButton | undefined): TemplateResult | typeof n
 
 function renderModes(model: HomeModel): TemplateResult | typeof nothing {
   if (!model.modes) return nothing;
-  return html`<div class="modes">${chip(model.modes.smart)}${chip(model.modes.night)}</div>`;
+  return html`<div class="modes">${chip(model.modes.smart)}${chip(model.modes.night)}${(model.modes.extra ?? []).map((c) => chip(c))}</div>`;
 }
 
 /* ---------------- Why controls are disabled ---------------- */
@@ -438,6 +438,7 @@ function renderReasons(model: HomeModel): TemplateResult | typeof nothing {
     model.volume ? { enabled: model.volume.slider.enabled, reason: model.volume.reason } : undefined,
     model.modes?.smart,
     model.modes?.night,
+    ...(model.modes?.extra ?? []),
     ...(model.playback?.actions ?? []),
   ];
   // The standby hint is already in the now playing panel.

@@ -53,6 +53,9 @@ export interface DeviceRegistryEntry {
   sw_version?: string | null;
   configuration_url?: string | null;
   area_id?: string | null;
+  /** The device this one is connected through (the rear speakers of a JBL One bar point to the bar). */
+  via_device_id?: string | null;
+  identifiers?: [string, string][];
 }
 
 export interface HassServiceTarget {
@@ -165,6 +168,8 @@ export const ROLE_DOMAINS = {
   atmos: "select",
   rear: "select",
   eq_preset: "select",
+  broadcast: "select",
+  sleep_timer: "select",
   display_clock_when: "select",
   // number (the five eq_band numbers are in BarEntities.eqBands)
   audio_sync: "number",
@@ -172,6 +177,9 @@ export const ROLE_DOMAINS = {
   // switch
   night: "switch",
   smart_mode: "switch",
+  pure_voice: "switch",
+  deep_sleep: "switch",
+  feedback_tone: "switch",
   display_clock: "switch",
   // button
   standard_mode: "button",
@@ -180,6 +188,8 @@ export const ROLE_DOMAINS = {
   sub_pair: "button",
   clear_messages: "button",
   restart: "button",
+  bass_boost: "button",
+  moment: "button",
   // sensor
   sound_mode: "sensor",
   bluetooth_device: "sensor",
@@ -192,6 +202,9 @@ export const ROLE_DOMAINS = {
   rear_battery_left: "sensor",
   rear_battery_right: "sensor",
   audio_format: "sensor",
+  play_medium: "sensor",
+  power_on_time: "sensor",
+  playback_time: "sensor",
   calibration: "sensor",
   subwoofer: "sensor",
   mode_after_standby: "sensor",
@@ -201,6 +214,11 @@ export const ROLE_DOMAINS = {
   messages: "sensor",
   // binary_sensor
   rear_docked: "binary_sensor",
+  rear_online_left: "binary_sensor",
+  rear_online_right: "binary_sensor",
+  rear_charging_left: "binary_sensor",
+  rear_charging_right: "binary_sensor",
+  atmos_active: "binary_sensor",
   bluetooth_connected: "binary_sensor",
   command_running: "binary_sensor",
   timer_ringing: "binary_sensor",
@@ -229,7 +247,30 @@ export type BarEntities = Partial<Record<Role, string>> & {
   recentMessages: string[];
   /** More than one jbl_bar_91 media_player exists. */
   multipleBars: boolean;
+  /** Integration that provides the bar: "jbl_bar_91" (Bar 9.1 toolkit) or "jbl_bar" (JBL One bars, e.g. Bar 1300MK2). */
+  platform?: string;
+  /** Top of the volume scale shown by the card (32 on the Bar 9.1 remote, 100 on JBL One bars). */
+  volumeMax?: number;
+  /** Volume change of one volume_up / volume_down press on that scale. */
+  volumeStep?: number;
+  /** Labels of the EQ bands when the bar has other bands than the Bar 9.1's five (index = eqBands index). */
+  eqBandLabels?: string[];
+  /**
+   * Level settings that the bar only exposes as a "next level" button plus a level sensor
+   * (Atmos level on JBL One bars). Key: the sensor used as the role's entity.
+   */
+  cycles?: Record<string, CycleLevel>;
 };
+
+/** A level changed by pressing a button that steps to the next option. */
+export interface CycleLevel {
+  /** The button that steps to the next option. */
+  button: string;
+  /** The sensor states in the order the button steps through them. */
+  options: string[];
+  /** Translation suffix per option (e.g. "1" -> "low"), used for the option labels. */
+  labels: Record<string, string>;
+}
 
 /* ------------------------------------------------------------------ */
 /* Tab contract                                                        */

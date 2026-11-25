@@ -127,6 +127,23 @@ The default `list` layout:
 - No YAML packages, scripts or helpers: the card calls the integration's services
   (`jbl_bar_91.timer_start`, `jbl_bar_91.display_message`, ...) and the entities directly.
 
+### JBL One bars (Bar 1300MK2 / 1300XMK2 and similar)
+
+The card also works with bars set up through the **JBL Bar** integration (`jbl_bar`,
+[SH1FT-W/jbl-bar](https://github.com/SH1FT-W/jbl-bar)), which talks to the JBL One app API.
+Pick the bar's `media_player` as `entity`; the rest is found from the device and its rear
+speakers. What changes on these bars:
+
+- Volume is shown and set on the bar's 0–100 scale, in the bar's own step.
+- Atmos height uses the "next level" key and the Atmos level sensor; the card presses the key until
+  the bar reports the level you picked.
+- Rear speakers (battery, docked, online, charging) come from their own devices.
+- All seven Front EQ bands are shown with their frequency.
+- Home also shows PureVoice, Tones, Bass boost, Moment and Deep sleep; Sound adds Broadcast and the
+  sleep timer; System shows where the bar plays from, rear speaker status and the usage counters.
+- The subwoofer picture is the rounded sub that lies on its side.
+- Timers, display messages and the other Bar 9.1 remote features are not available on these bars.
+
 ## Installation
 
 ### Marketplace or HACS (recommended)

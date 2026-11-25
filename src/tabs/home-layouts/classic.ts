@@ -119,8 +119,10 @@ function renderVolume(volume: HomeVolume | undefined): TemplateResult {
         <button class="icon-btn" ?disabled=${!down.enabled} @click=${down.run} aria-label=${down.label} title=${down.label}>
           <ha-icon .icon=${down.icon}></ha-icon>
         </button>
-        <div class="vol-number ${volume.pending ? "pending" : ""} ${volume.muted ? "is-muted" : ""}" aria-live="polite">
-          ${volume.shownText}<span class="vol-max">/${volume.max}</span>
+        <div class="vol-number ${volume.pending ? "pending" : ""} ${volume.muted ? "is-muted" : ""} ${volume.off ? "is-off" : ""}" aria-live="polite">
+          ${volume.off
+            ? html`<span class="vol-off"><ha-icon icon="mdi:power-sleep"></ha-icon>${volume.offText}</span>`
+            : html`${volume.shownText}<span class="vol-max">/${volume.max}</span>`}
         </div>
         <button class="icon-btn" ?disabled=${!up.enabled} @click=${up.run} aria-label=${up.label} title=${up.label}>
           <ha-icon .icon=${up.icon}></ha-icon>
@@ -143,7 +145,7 @@ function renderVolume(volume: HomeVolume | undefined): TemplateResult {
         min=${slider.min}
         max=${slider.max}
         step=${slider.step}
-        .value=${String(slider.value)}
+        .value=${String(volume.off ? slider.min : slider.value)}
         ?disabled=${!slider.enabled}
         aria-label=${slider.label}
         @input=${(ev: Event) => slider.preview(Number((ev.target as HTMLInputElement).value))}
@@ -185,11 +187,11 @@ function renderModes(model: HomeModel): TemplateResult {
   // The standby hint is already shown above the source.
   const reasons = [
     ...new Set(
-      [smart, night].flatMap((c) => (c && !c.enabled && c.reason && c.reason !== model.standbyHint ? [c.reason] : [])),
+      [smart, night, ...(model.modes.extra ?? [])].flatMap((c) => (c && !c.enabled && c.reason && c.reason !== model.standbyHint ? [c.reason] : [])),
     ),
   ];
   return html`<div class="section">
-    <div class="chips">${chip(smart)}${chip(night)}</div>
+    <div class="chips">${chip(smart)}${chip(night)}${(model.modes.extra ?? []).map((c) => chip(c))}</div>
     ${reasons.map((r) => html`<div class="hint mode-reason">${r}</div>`)}
   </div>`;
 }
@@ -375,6 +377,23 @@ export const classicStyles = css`
     color: var(--jbl-muted);
     text-decoration: line-through;
     text-decoration-thickness: 2px;
+  }
+  .vol-number.is-off {
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--jbl-muted);
+  }
+  .vol-off {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    border: 1px solid var(--jbl-border);
+    background: rgba(127, 127, 127, 0.08);
+  }
+  .vol-off ha-icon {
+    --mdc-icon-size: 18px;
   }
   .vol-max {
     font-size: 0.9rem;

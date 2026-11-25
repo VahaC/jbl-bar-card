@@ -100,7 +100,7 @@ describe("homeModel: volume", () => {
     const bar = newBar();
     const ctx = tabContext(bar);
     const volume = homeModel(ctx).volume!;
-    expect(volume).toMatchObject({ current: 14, shown: 14, shownText: "14", max: 32, pending: false, muted: false });
+    expect(volume).toMatchObject({ current: 14, shown: 14, shownText: "14", max: 32, pending: false, muted: false, off: false });
     expect(volume.up.enabled && volume.down.enabled).toBe(true);
     volume.up.run();
     expect(ctx.pendingValue(HOME_KEYS.volume)).toBe(15);
@@ -234,6 +234,7 @@ describe("homeModel: standby", () => {
     expect(model.volume!.slider.enabled).toBe(false);
     expect(model.volume!.mute.enabled).toBe(false);
     expect(model.volume!.up.reason).toBe(model.standbyHint);
+    expect(model.volume).toMatchObject({ off: true, offText: "Off" });
     expect(model.playback).toBeUndefined();
     // The bar reports Smart mode unavailable in standby: the reason is the standby hint.
     expect(model.modes!.smart).toMatchObject({ enabled: false, reason: model.standbyHint });

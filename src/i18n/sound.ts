@@ -6,6 +6,12 @@ import type { TabStrings } from "./index";
  */
 export const strings: TabStrings = {
   en: {
+    broadcast: "Broadcast",
+    broadcast_off: "Off",
+    broadcast_mono: "Mono",
+    broadcast_stereo: "Stereo",
+    sleep_timer: "Sleep timer (min)",
+    sleep_timer_off: "Off",
     empty: "This soundbar does not report any sound settings.",
     db: "{value} dB",
     ms: "{value} ms",
@@ -67,6 +73,12 @@ export const strings: TabStrings = {
     reason_bands_sending: "The EQ bands are still being sent. Pick a preset once they are set.",
   },
   uk: {
+    broadcast: "Трансляція",
+    broadcast_off: "Вимк.",
+    broadcast_mono: "Моно",
+    broadcast_stereo: "Стерео",
+    sleep_timer: "Таймер сну (хв)",
+    sleep_timer_off: "Вимк.",
     empty: "Цей саундбар не повідомляє жодних налаштувань звуку.",
     db: "{value} дБ",
     ms: "{value} мс",
@@ -126,6 +138,12 @@ export const strings: TabStrings = {
     reason_bands_sending: "Смуги еквалайзера ще надсилаються. Виберіть пресет, щойно вони встановляться.",
   },
   fr: {
+    broadcast: "Diffusion",
+    broadcast_off: "Désactivée",
+    broadcast_mono: "Mono",
+    broadcast_stereo: "Stéréo",
+    sleep_timer: "Minuterie de veille (min)",
+    sleep_timer_off: "Désactivée",
     empty: "Cette barre de son n'indique aucun réglage du son.",
     db: "{value} dB",
     ms: "{value} ms",
