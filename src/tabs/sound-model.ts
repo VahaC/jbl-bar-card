@@ -18,6 +18,8 @@ export const SOUND_KEYS = {
   center: "sound.center",
   atmos: "sound.atmos",
   rear: "sound.rear",
+  broadcast: "sound.broadcast",
+  sleep_timer: "sound.sleep_timer",
   audioSync: "sound.audio_sync",
   preset: "sound.eq_preset",
   bassOffset: "sound.bass_offset",
@@ -42,14 +44,17 @@ export const SOUND_TIMING = {
 /** Center level gain per option index ("0" = original ... "5" = +12 dB). */
 export const CENTER_DB: readonly number[] = [0, 2.4, 4.8, 7.2, 9.6, 12];
 
-export type LevelRole = "bass" | "center" | "atmos" | "rear";
-export const LEVEL_ROLES: readonly LevelRole[] = ["bass", "center", "atmos", "rear"];
+export type LevelRole = "bass" | "center" | "atmos" | "rear" | "broadcast" | "sleep_timer";
+export const LEVEL_ROLES: readonly LevelRole[] = ["bass", "center", "atmos", "rear", "broadcast", "sleep_timer"];
 
 const LEVEL_OPTIONS: Record<LevelRole, readonly string[]> = {
   bass: ["1", "2", "3", "4", "5"],
   center: ["0", "1", "2", "3", "4", "5"],
   atmos: ["low", "mid", "high"],
   rear: ["low", "mid", "high", "muted"],
+  // JBL One bars: speaker broadcast (multi-room) and the sleep timer in minutes.
+  broadcast: ["off", "mono", "stereo"],
+  sleep_timer: ["0", "15", "30", "45", "60", "90", "120"],
 };
 
 export const EQ_PRESETS: readonly string[] = [
@@ -448,7 +453,10 @@ function levelLabel(ctx: TabContext, role: LevelRole, option: string): string {
     }
     case "atmos":
     case "rear":
+    case "broadcast":
       return tOr(ctx, `sound.${role}_${option}`, humanize(option));
+    case "sleep_timer":
+      return option === "0" ? ctx.t("sound.sleep_timer_off") : option;
   }
 }
 
@@ -470,7 +478,12 @@ function levelModel(ctx: TabContext, role: LevelRole): SoundLevel | undefined {
   const id = ctx.entities[role];
   if (!id) return undefined;
   const st = ctx.stateOf(id);
-  const options = selectOptions(st, LEVEL_OPTIONS[role]);
+  // A level that the bar only steps with a "next level" button (JBL One Atmos) reads its options
+  // from the cycle; a select reads them from the entity.
+  const cycle = ctx.entities.cycles?.[id];
+  const options = cycle ? cycle.options : selectOptions(st, LEVEL_OPTIONS[role]);
+  /** The option's translation suffix: the cycle's label, JBL One's "medium" = "mid", else the option. */
+  const labelKey = (option: string): string => cycle?.labels[option] ?? (option === "medium" ? "mid" : option);
   const current = st && options.includes(st.state) ? st.state : undefined;
   const key = SOUND_KEYS[role];
   const queue = sendQueue<string>(ctx, key);
@@ -514,11 +527,11 @@ function levelModel(ctx: TabContext, role: LevelRole): SoundLevel | undefined {
     entity: id,
     label: ctx.t(`sound.${role}`),
     options: options.map((option) => {
-      const label = levelLabel(ctx, role, option);
+      const label = levelLabel(ctx, role, labelKey(option));
       return {
         value: option,
         label,
-        shortLabel: levelShortLabel(ctx, role, option, label),
+        shortLabel: levelShortLabel(ctx, role, labelKey(option), label),
         active: option === current,
         pending: target === option && option !== current,
       };
@@ -833,7 +846,7 @@ function bandsModel(ctx: TabContext): SoundBand[] {
     // A drag the band can no longer finish is dropped (the bar went away, a preset started).
     if (!enabled) delete local.drag[i];
     const shown = local.drag[i] ?? queued ?? ctx.pendingValue<number>(key) ?? current;
-    const label = ctx.t(`sound.band_${i}`);
+    const label = ctx.entities.eqBandLabels?.[i] ?? ctx.t(`sound.band_${i}`);
     const unknown = ctx.t("common.unknown");
 
     bands.push({

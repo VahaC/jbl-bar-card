@@ -18,6 +18,11 @@ export const HOME_KEYS = {
   smart: "home.smart_mode",
   standard: "home.standard_mode",
   night: "home.night",
+  pureVoice: "home.pure_voice",
+  feedbackTone: "home.feedback_tone",
+  bassBoost: "home.bass_boost",
+  moment: "home.moment",
+  deepSleep: "home.deep_sleep",
   playback: "home.playback",
 } as const;
 
@@ -37,10 +42,10 @@ export interface HomeLocal {
   dragVolume?: number;
 }
 
-/** The bar's volume on its own 0..32 scale, or undefined. */
-export function volumeStep(hass: HomeAssistant, mediaPlayer: string): number | undefined {
+/** The bar's volume on its own scale (0..32 on the Bar 9.1, 0..100 on JBL One bars), or undefined. */
+export function volumeStep(hass: HomeAssistant, mediaPlayer: string, max: number = VOLUME_MAX): number | undefined {
   const level = hass.states[mediaPlayer]?.attributes.volume_level;
-  return typeof level === "number" ? Math.round(level * VOLUME_MAX) : undefined;
+  return typeof level === "number" ? Math.round(level * max) : undefined;
 }
 
 /** Material Design battery icon for a level (charging variants while docked). */
@@ -255,6 +260,8 @@ export interface HomeModel {
   modes?: {
     smart?: HomeToggle | HomeButton;
     night?: HomeToggle;
+    /** More sound keys of JBL One bars (PureVoice, Tones, Bass boost, Moment), in that order. */
+    extra?: (HomeToggle | HomeButton)[];
   };
   /** Undefined when off, or when there are neither buttons nor track info. */
   playback?: HomePlayback;
@@ -360,14 +367,15 @@ function roomModel(ctx: TabContext): HomeRoom {
     barImage: docked ? IMAGES.barDocked : IMAGES.barCenter,
     rears: hasRears ? [rear("left"), rear("right")] : [],
     sub: {
-      entity: entities.bass,
+      // JBL One bars have no bass level; their sub opens the Bass boost key instead.
+      entity: entities.bass ?? entities.bass_boost,
       name: subName,
       bassLevel,
       bassText,
       label: bassText ? `${subName}, ${bassText}` : subName,
-      enabled: Boolean(entities.bass),
-      image: IMAGES.subwoofer,
-      open: () => ctx.moreInfo(entities.bass),
+      enabled: Boolean(entities.bass ?? entities.bass_boost),
+      image: entities.platform === "jbl_bar" ? IMAGES.subwooferCompact : IMAGES.subwoofer,
+      open: () => ctx.moreInfo((entities.bass ?? entities.bass_boost) as string),
     },
   };
 }
@@ -414,7 +422,10 @@ function volumeModel(ctx: TabContext, standbyHint: string | undefined): HomeVolu
   if (!mp) return undefined;
   const mediaPlayer = ctx.entities.media_player;
   const local = ctx.local<HomeLocal>("home", () => ({}));
-  const current = volumeStep(ctx.hass, mediaPlayer);
+  const max = ctx.entities.volumeMax ?? VOLUME_MAX;
+  /** One volume_up / volume_down press on that scale (3 % on JBL One bars). */
+  const stepSize = ctx.entities.volumeStep ?? 1;
+  const current = volumeStep(ctx.hass, mediaPlayer, max);
   const pendingTarget = ctx.pendingValue<number>(HOME_KEYS.volume);
   // A drag the bar cut short (standby, unreachable, volume unknown) never gets its release:
   // drop its preview so the number does not stay frozen at the dragged value.
@@ -430,11 +441,15 @@ function volumeModel(ctx: TabContext, standbyHint: string | undefined): HomeVolu
     // Read the pending target at press time: quick repeated presses add up.
     const base = ctx.pendingValue<number>(HOME_KEYS.volume) ?? current;
     if (base === undefined) return;
-    const target = Math.min(VOLUME_MAX, Math.max(0, base + delta));
+    const target = Math.min(max, Math.max(0, base + delta * stepSize));
     if (target === base) return;
     void ctx.call(HOME_KEYS.volume, () => (delta > 0 ? ctx.services.volumeUp() : ctx.services.volumeDown()), {
       value: target,
-      until: (hass) => volumeStep(hass, mediaPlayer) === target,
+      until: (hass) => {
+        // The bar moves by its own step; done once the volume reached (or passed) the target.
+        const now = volumeStep(hass, mediaPlayer, max);
+        return now !== undefined && (delta > 0 ? now >= target : now <= target);
+      },
     });
   };
 
@@ -443,7 +458,7 @@ function volumeModel(ctx: TabContext, standbyHint: string | undefined): HomeVolu
   const muteLabel = ctx.t(muteShown ? "home.unmute" : "home.mute");
   return {
     title: ctx.t("home.volume"),
-    max: VOLUME_MAX,
+    max,
     current,
     shown,
     shownText: shown !== undefined ? String(shown) : ctx.t("common.unknown"),
@@ -465,7 +480,7 @@ function volumeModel(ctx: TabContext, standbyHint: string | undefined): HomeVolu
       key: HOME_KEYS.volume,
       label: ctx.t("home.volume_up"),
       icon: "mdi:plus",
-      enabled: on && shown !== undefined && shown < VOLUME_MAX,
+      enabled: on && shown !== undefined && shown < max,
       pending: volPending,
       reason,
       run: () => step(1),
@@ -492,8 +507,8 @@ function volumeModel(ctx: TabContext, standbyHint: string | undefined): HomeVolu
     },
     slider: {
       min: 0,
-      max: VOLUME_MAX,
-      step: 1,
+      max,
+      step: stepSize,
       value: shown ?? 0,
       enabled: on && current !== undefined,
       label: ctx.t("home.volume"),
@@ -509,7 +524,10 @@ function volumeModel(ctx: TabContext, standbyHint: string | undefined): HomeVolu
         }
         void ctx.call(HOME_KEYS.volume, () => ctx.services.setVolume(target), {
           value: target,
-          until: (hass) => volumeStep(hass, mediaPlayer) === target,
+          until: (hass) => {
+            const now = volumeStep(hass, mediaPlayer, max);
+            return now !== undefined && Math.abs(now - target) < stepSize;
+          },
           timeoutMs: 60000,
         });
       },
@@ -582,8 +600,43 @@ function modesModel(ctx: TabContext): HomeModel["modes"] {
   const night = entities.night
     ? switchModel(ctx, "night", HOME_KEYS.night, entities.night, t("home.night"), "mdi:weather-night")
     : undefined;
-  if (!smart && !night) return undefined;
-  return { smart, night };
+  const extra = extraModes(ctx);
+  if (!smart && !night && !extra.length) return undefined;
+  return { smart, night, extra: extra.length ? extra : undefined };
+}
+
+/** A remote key that only fires (Bass boost, Moment): no state to show, just pending while it runs. */
+function pressModel(ctx: TabContext, id: string, key: string, entity: string, label: string, icon: string): HomeButton {
+  const enabled = ctx.isAvailable(entity) && ctx.barOn;
+  return {
+    kind: "button",
+    id,
+    key,
+    label,
+    icon,
+    enabled,
+    pending: ctx.isPending(key),
+    reason: enabled ? undefined : unreachableReason(ctx) ?? modeUnavailableReason(ctx, label),
+    run: () => {
+      if (!ctx.isPending(key)) void ctx.call(key, () => ctx.services.press(entity));
+    },
+  };
+}
+
+function extraModes(ctx: TabContext): (HomeToggle | HomeButton)[] {
+  const { entities, t } = ctx;
+  const out: (HomeToggle | HomeButton)[] = [];
+  if (entities.pure_voice)
+    out.push(switchModel(ctx, "pure_voice", HOME_KEYS.pureVoice, entities.pure_voice, t("home.pure_voice"), "mdi:account-voice"));
+  if (entities.feedback_tone)
+    out.push(switchModel(ctx, "feedback_tone", HOME_KEYS.feedbackTone, entities.feedback_tone, t("home.feedback_tone"), "mdi:volume-source"));
+  if (entities.bass_boost)
+    out.push(pressModel(ctx, "bass_boost", HOME_KEYS.bassBoost, entities.bass_boost, t("home.bass_boost"), "mdi:waveform"));
+  if (entities.moment)
+    out.push(pressModel(ctx, "moment", HOME_KEYS.moment, entities.moment, t("home.moment"), "mdi:play-box-multiple"));
+  if (entities.deep_sleep)
+    out.push(switchModel(ctx, "deep_sleep", HOME_KEYS.deepSleep, entities.deep_sleep, t("home.deep_sleep"), "mdi:power-sleep"));
+  return out;
 }
 
 const PLAYBACK_ICONS: Record<PlaybackAction, string> = {

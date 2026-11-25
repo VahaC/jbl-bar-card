@@ -31,7 +31,7 @@ export interface SysAction {
 }
 
 export interface SysMetric {
-  key: "cpu" | "memory" | "temperature" | "wifi" | "uptime" | "mode_after_standby";
+  key: "cpu" | "memory" | "temperature" | "wifi" | "uptime" | "mode_after_standby" | "play_medium" | "rears" | "power_on_time" | "playback_time";
   entity: string;
   icon: string;
   label: string;
@@ -265,6 +265,52 @@ export function systemModel(ctx: TabContext): SystemModel {
       title: t("system.mode_after_standby_hint"),
     });
   }
+  if (entities.play_medium) {
+    const state = ctx.stateOf(entities.play_medium)?.state;
+    metrics.push({
+      key: "play_medium",
+      entity: entities.play_medium,
+      icon: "mdi:play-network-outline",
+      label: t("system.play_medium"),
+      value: isBlank(state) ? unknown : state!,
+    });
+  }
+  const rearIds = (side: "left" | "right") => ({ online: entities[`rear_online_${side}`], charging: entities[`rear_charging_${side}`] });
+  const rearStatus = (side: "left" | "right"): string | undefined => {
+    const ids = rearIds(side);
+    if (!ids.online && !ids.charging) return undefined;
+    const online = ctx.stateOf(ids.online)?.state;
+    const parts = [online === "on" ? t("system.rear_online") : online === "off" ? t("system.rear_offline") : unknown];
+    if (ctx.stateOf(ids.charging)?.state === "on") parts.push(t("system.rear_charging"));
+    return `${t(`system.rear_${side}`)}: ${parts.join(", ")}`;
+  };
+  const rears = [rearStatus("left"), rearStatus("right")].filter((s): s is string => Boolean(s));
+  if (rears.length) {
+    const offline = (["left", "right"] as const).some((side) => ctx.stateOf(rearIds(side).online)?.state === "off");
+    metrics.push({
+      key: "rears",
+      entity: (entities.rear_online_left ?? entities.rear_online_right ?? entities.rear_charging_left ?? entities.rear_charging_right)!,
+      icon: "mdi:speaker-wireless",
+      label: t("system.rears"),
+      value: rears.join(" · "),
+      tone: offline ? "warn" : "ok",
+    });
+  }
+  const hours = (key: "power_on_time" | "playback_time", icon: string): void => {
+    const id = entities[key];
+    if (!id) return;
+    const v = num(id, 0);
+    metrics.push({
+      key,
+      entity: id,
+      icon,
+      label: t(`system.${key}`),
+      value: v === undefined ? unknown : t("system.hours", { value: ctx.formatNumber(v) }),
+      number: v,
+    });
+  };
+  hours("power_on_time", "mdi:power-plug-outline");
+  hours("playback_time", "mdi:music-circle-outline");
   const hiddenMetrics = [
     entities.wifi_signal ? undefined : t("system.wifi_signal"),
     entities.uptime ? undefined : t("system.uptime"),
