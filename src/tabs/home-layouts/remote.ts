@@ -140,7 +140,7 @@ function renderDeck(ctx: TabContext, model: HomeModel, shown: string | undefined
           : nothing}
         ${power ? reasonOf(power, shown) : nothing}
         ${modes
-          ? html`<div class="tiles-col">${tile(ctx, modes.smart, shown)}${tile(ctx, modes.night, shown)}</div>`
+          ? html`<div class="tiles-col">${tile(ctx, modes.smart, shown)}${tile(ctx, modes.night, shown)}${(modes.extra ?? []).map((c) => tile(ctx, c, shown))}</div>`
           : nothing}
       </div>
     </div>

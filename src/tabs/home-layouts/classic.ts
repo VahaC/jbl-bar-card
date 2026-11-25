@@ -185,11 +185,11 @@ function renderModes(model: HomeModel): TemplateResult {
   // The standby hint is already shown above the source.
   const reasons = [
     ...new Set(
-      [smart, night].flatMap((c) => (c && !c.enabled && c.reason && c.reason !== model.standbyHint ? [c.reason] : [])),
+      [smart, night, ...(model.modes.extra ?? [])].flatMap((c) => (c && !c.enabled && c.reason && c.reason !== model.standbyHint ? [c.reason] : [])),
     ),
   ];
   return html`<div class="section">
-    <div class="chips">${chip(smart)}${chip(night)}</div>
+    <div class="chips">${chip(smart)}${chip(night)}${(model.modes.extra ?? []).map((c) => chip(c))}</div>
     ${reasons.map((r) => html`<div class="hint mode-reason">${r}</div>`)}
   </div>`;
 }
