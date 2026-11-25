@@ -1,67 +1,75 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 310" role="img" aria-label="Wireless subwoofer lying on its side">
+  <!-- Same palette and finish as bar-docked.svg / bar-center.svg so the set looks like one system. -->
   <defs>
     <radialGradient id="jsc-shadow" cx="0.5" cy="0.5" r="0.5">
-      <stop offset="0" stop-color="#000" stop-opacity="0.45"/>
+      <stop offset="0" stop-color="#000" stop-opacity="0.35"/>
       <stop offset="1" stop-color="#000" stop-opacity="0"/>
     </radialGradient>
     <linearGradient id="jsc-body-sheen" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0" stop-color="#fff" stop-opacity="0.16"/>
-      <stop offset="0.25" stop-color="#fff" stop-opacity="0.04"/>
-      <stop offset="0.7" stop-color="#000" stop-opacity="0"/>
-      <stop offset="1" stop-color="#000" stop-opacity="0.3"/>
+      <stop offset="0.3" stop-color="#fff" stop-opacity="0.05"/>
+      <stop offset="0.75" stop-color="#000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000" stop-opacity="0.25"/>
     </linearGradient>
-    <radialGradient id="jsc-face" cx="0.42" cy="0.38" r="0.75">
-      <stop offset="0" stop-color="#3a3a3e"/>
-      <stop offset="0.7" stop-color="#26262a"/>
-      <stop offset="1" stop-color="#18181b"/>
-    </radialGradient>
-    <pattern id="jsc-grille" width="3.4" height="3.4" patternUnits="userSpaceOnUse">
-      <circle cx="1.7" cy="1.7" r="0.75" fill="#000" fill-opacity="0.45"/>
+    <linearGradient id="jsc-rim" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7a7a7d"/>
+      <stop offset="0.08" stop-color="#6a6a6d"/>
+      <stop offset="0.55" stop-color="#5b5b5e"/>
+      <stop offset="0.86" stop-color="#4e4e51"/>
+      <stop offset="1" stop-color="#3f3f42"/>
+    </linearGradient>
+    <linearGradient id="jsc-grille" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#58585b"/>
+      <stop offset="1" stop-color="#4c4c4f"/>
+    </linearGradient>
+    <linearGradient id="jsc-sheen" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#fff" stop-opacity="0"/>
+      <stop offset="0.35" stop-color="#fff" stop-opacity="0.05"/>
+      <stop offset="0.6" stop-color="#fff" stop-opacity="0.11"/>
+      <stop offset="0.8" stop-color="#fff" stop-opacity="0.03"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+    <pattern id="jsc-holes" width="3" height="3" patternUnits="userSpaceOnUse">
+      <circle cx="1.5" cy="1.5" r="0.75" fill="#000" fill-opacity="0.28"/>
     </pattern>
-    <linearGradient id="jsc-rim" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#8d8d92"/>
-      <stop offset="0.5" stop-color="#3d3d41"/>
-      <stop offset="1" stop-color="#1a1a1c"/>
-    </linearGradient>
   </defs>
   <ellipse cx="180" cy="290" rx="150" ry="12" fill="url(#jsc-shadow)"/>
   <g>
-        <rect x="34.0" y="34.0" width="196.0" height="190.0" rx="64.0" fill="rgb(26,26,29)"/>
-    <rect x="36.9" y="35.9" width="196.4" height="190.4" rx="64.1" fill="rgb(26,26,29)"/>
-    <rect x="39.8" y="37.7" width="196.7" height="190.7" rx="64.3" fill="rgb(27,27,30)"/>
-    <rect x="42.7" y="39.6" width="197.1" height="191.1" rx="64.4" fill="rgb(28,28,31)"/>
-    <rect x="45.6" y="41.4" width="197.5" height="191.5" rx="64.6" fill="rgb(28,28,31)"/>
-    <rect x="48.4" y="43.3" width="197.9" height="191.9" rx="64.7" fill="rgb(29,29,32)"/>
-    <rect x="51.3" y="45.1" width="198.2" height="192.2" rx="64.9" fill="rgb(30,30,33)"/>
-    <rect x="54.2" y="47.0" width="198.6" height="192.6" rx="65.0" fill="rgb(30,30,33)"/>
-    <rect x="57.1" y="48.8" width="199.0" height="193.0" rx="65.2" fill="rgb(31,31,34)"/>
-    <rect x="60.0" y="50.7" width="199.3" height="193.3" rx="65.3" fill="rgb(32,32,35)"/>
-    <rect x="62.9" y="52.5" width="199.7" height="193.7" rx="65.5" fill="rgb(32,32,35)"/>
-    <rect x="65.8" y="54.4" width="200.1" height="194.1" rx="65.6" fill="rgb(33,33,36)"/>
-    <rect x="68.7" y="56.2" width="200.4" height="194.4" rx="65.8" fill="rgb(34,34,37)"/>
-    <rect x="71.6" y="58.1" width="200.8" height="194.8" rx="65.9" fill="rgb(34,34,37)"/>
-    <rect x="74.4" y="59.9" width="201.2" height="195.2" rx="66.1" fill="rgb(35,35,38)"/>
-    <rect x="77.3" y="61.8" width="201.6" height="195.6" rx="66.2" fill="rgb(36,36,39)"/>
-    <rect x="80.2" y="63.6" width="201.9" height="195.9" rx="66.4" fill="rgb(36,36,39)"/>
-    <rect x="83.1" y="65.5" width="202.3" height="196.3" rx="66.5" fill="rgb(37,37,40)"/>
-    <rect x="86.0" y="67.3" width="202.7" height="196.7" rx="66.7" fill="rgb(38,38,41)"/>
-    <rect x="88.9" y="69.2" width="203.0" height="197.0" rx="66.8" fill="rgb(38,38,41)"/>
-    <rect x="91.8" y="71.0" width="203.4" height="197.4" rx="67.0" fill="rgb(39,39,42)"/>
-    <rect x="94.7" y="72.9" width="203.8" height="197.8" rx="67.1" fill="rgb(40,40,43)"/>
-    <rect x="97.6" y="74.7" width="204.1" height="198.1" rx="67.3" fill="rgb(40,40,43)"/>
-    <rect x="100.4" y="76.6" width="204.5" height="198.5" rx="67.4" fill="rgb(41,41,44)"/>
-    <rect x="103.3" y="78.4" width="204.9" height="198.9" rx="67.6" fill="rgb(42,42,45)"/>
-    <rect x="106.2" y="80.3" width="205.3" height="199.3" rx="67.7" fill="rgb(42,42,45)"/>
-    <rect x="109.1" y="82.1" width="205.6" height="199.6" rx="67.9" fill="rgb(43,43,46)"/>
-    <rect x="112.0" y="84.0" width="206.0" height="200.0" rx="68.0" fill="rgb(44,44,47)"/>
+    <rect x="34.0" y="34.0" width="196.0" height="190.0" rx="64.0" fill="rgb(63,63,66)"/>
+    <rect x="36.9" y="35.9" width="196.4" height="190.4" rx="64.1" fill="rgb(64,64,67)"/>
+    <rect x="39.8" y="37.7" width="196.7" height="190.7" rx="64.3" fill="rgb(66,66,69)"/>
+    <rect x="42.7" y="39.6" width="197.1" height="191.1" rx="64.4" fill="rgb(67,67,70)"/>
+    <rect x="45.6" y="41.4" width="197.5" height="191.5" rx="64.6" fill="rgb(69,69,72)"/>
+    <rect x="48.4" y="43.3" width="197.9" height="191.9" rx="64.7" fill="rgb(70,70,73)"/>
+    <rect x="51.3" y="45.1" width="198.2" height="192.2" rx="64.9" fill="rgb(72,72,75)"/>
+    <rect x="54.2" y="47.0" width="198.6" height="192.6" rx="65.0" fill="rgb(74,74,77)"/>
+    <rect x="57.1" y="48.8" width="199.0" height="193.0" rx="65.2" fill="rgb(75,75,78)"/>
+    <rect x="60.0" y="50.7" width="199.3" height="193.3" rx="65.3" fill="rgb(77,77,80)"/>
+    <rect x="62.9" y="52.5" width="199.7" height="193.7" rx="65.5" fill="rgb(78,78,81)"/>
+    <rect x="65.8" y="54.4" width="200.1" height="194.1" rx="65.6" fill="rgb(80,80,83)"/>
+    <rect x="68.7" y="56.2" width="200.4" height="194.4" rx="65.8" fill="rgb(82,82,85)"/>
+    <rect x="71.6" y="58.1" width="200.8" height="194.8" rx="65.9" fill="rgb(83,83,86)"/>
+    <rect x="74.4" y="59.9" width="201.2" height="195.2" rx="66.1" fill="rgb(85,85,88)"/>
+    <rect x="77.3" y="61.8" width="201.6" height="195.6" rx="66.2" fill="rgb(86,86,89)"/>
+    <rect x="80.2" y="63.6" width="201.9" height="195.9" rx="66.4" fill="rgb(88,88,91)"/>
+    <rect x="83.1" y="65.5" width="202.3" height="196.3" rx="66.5" fill="rgb(90,90,93)"/>
+    <rect x="86.0" y="67.3" width="202.7" height="196.7" rx="66.7" fill="rgb(91,91,94)"/>
+    <rect x="88.9" y="69.2" width="203.0" height="197.0" rx="66.8" fill="rgb(93,93,96)"/>
+    <rect x="91.8" y="71.0" width="203.4" height="197.4" rx="67.0" fill="rgb(94,94,97)"/>
+    <rect x="94.7" y="72.9" width="203.8" height="197.8" rx="67.1" fill="rgb(96,96,99)"/>
+    <rect x="97.6" y="74.7" width="204.1" height="198.1" rx="67.3" fill="rgb(98,98,101)"/>
+    <rect x="100.4" y="76.6" width="204.5" height="198.5" rx="67.4" fill="rgb(99,99,102)"/>
+    <rect x="103.3" y="78.4" width="204.9" height="198.9" rx="67.6" fill="rgb(101,101,104)"/>
+    <rect x="106.2" y="80.3" width="205.3" height="199.3" rx="67.7" fill="rgb(102,102,105)"/>
+    <rect x="109.1" y="82.1" width="205.6" height="199.6" rx="67.9" fill="rgb(104,104,107)"/>
+    <rect x="112.0" y="84.0" width="206.0" height="200.0" rx="68.0" fill="rgb(106,106,109)"/>
   </g>
-  <!-- sheen along the curved body -->
-  <path d="M98 34 H166 Q230 34 230 98 L318 152 V150 Q318 84 250 84 H180 Q112 84 112 150 L34 98 Q34 34 98 34 Z" fill="url(#jsc-body-sheen)" opacity="0.9"/>
-  <path d="M96 35.5 H168 Q214 35.5 226 64" stroke="#a5a5aa" stroke-opacity="0.5" stroke-width="1.4" fill="none" stroke-linecap="round"/>
-  <!-- front face: rounded-square grille over the driver -->
+  <path d="M98 34 H166 Q230 34 230 98 L318 152 V150 Q318 84 250 84 H180 Q112 84 112 150 L34 98 Q34 34 98 34 Z" fill="url(#jsc-body-sheen)"/>
+  <path d="M96 35.5 H168 Q214 35.5 226 64" stroke="#fff" stroke-opacity="0.22" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+  <!-- front: rim like the bar body, grille like the bar's speaker grilles -->
   <rect x="112" y="84" width="206" height="200" rx="68" fill="url(#jsc-rim)"/>
-  <rect x="116" y="88" width="198" height="192" rx="64" fill="url(#jsc-face)"/>
-  <rect x="116" y="88" width="198" height="192" rx="64" fill="url(#jsc-grille)"/>
-  <ellipse cx="200" cy="170" rx="70" ry="68" fill="none" stroke="#000" stroke-opacity="0.18" stroke-width="6"/>
-  <path d="M132 120 Q150 96 190 92" stroke="#fff" stroke-opacity="0.12" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <rect x="112" y="84" width="206" height="200" rx="68" fill="url(#jsc-sheen)"/>
+  <rect x="120" y="92" width="190" height="184" rx="61" fill="url(#jsc-grille)" stroke="#000" stroke-opacity="0.18" stroke-width="1"/>
+  <rect x="120" y="92" width="190" height="184" rx="61" fill="url(#jsc-holes)"/>
+  <path d="M140 86 H290" stroke="#fff" stroke-opacity="0.22" stroke-width="1.2" fill="none"/>
 </svg>
