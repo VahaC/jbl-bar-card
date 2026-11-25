@@ -13,7 +13,15 @@ import type { SysAction, SysMetric, SystemModel, Tone } from "../system-model";
 
 /** Metrics drawn as ring gauges; the rest become list rows. */
 const GAUGE_KEYS: ReadonlyArray<SysMetric["key"]> = ["cpu", "memory", "temperature"];
-const ROW_KEYS: ReadonlyArray<SysMetric["key"]> = ["wifi", "uptime", "mode_after_standby"];
+const ROW_KEYS: ReadonlyArray<SysMetric["key"]> = [
+  "wifi",
+  "uptime",
+  "mode_after_standby",
+  "play_medium",
+  "rears",
+  "power_on_time",
+  "playback_time",
+];
 
 /** Id of the restart hint (unique inside one card's shadow root). */
 const RESTART_HINT_ID = "sys-b-restart-hint";
