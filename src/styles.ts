@@ -500,6 +500,49 @@ export const sharedStyles = css`
       animation-duration: 2.4s;
     }
   }
+
+  /* Hover: a soft shadow under anything clickable, the same look as the other dashboard cards. */
+  .icon-btn,
+  .btn,
+  .chip,
+  .seg button {
+    transition: box-shadow 160ms ease, background 120ms ease, color 120ms ease, border-color 160ms ease,
+      transform 100ms ease;
+  }
+  .icon-btn:hover:not(:disabled),
+  .btn:hover:not(:disabled),
+  .chip:hover:not(:disabled) {
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(var(--jbl-accent-rgb), 0.45);
+  }
+  .seg button:hover:not(:disabled):not(.active) {
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+  }
+  .icon-btn.on:not(:disabled),
+  .chip.on:not(:disabled) {
+    box-shadow: 0 4px 14px rgba(var(--jbl-accent-rgb), 0.35);
+  }
+  .icon-btn.on:hover:not(:disabled),
+  .chip.on:hover:not(:disabled) {
+    box-shadow: 0 6px 20px rgba(var(--jbl-accent-rgb), 0.5);
+  }
+  .icon-btn:active:not(:disabled),
+  .btn:active:not(:disabled),
+  .chip:active:not(:disabled) {
+    transform: scale(0.96);
+  }
+
+  /* Native slider when it cannot be used (bar in standby): a quiet track without a thumb. */
+  input[type="range"].slider:disabled {
+    opacity: 1;
+    accent-color: var(--jbl-disabled);
+    filter: grayscale(1);
+  }
+  input[type="range"].slider:disabled::-webkit-slider-thumb {
+    visibility: hidden;
+  }
+  input[type="range"].slider:disabled::-moz-range-thumb {
+    visibility: hidden;
+  }
 `;
 
 /** Styles of the card shell: header, tabs, strips, dialog, compact mode. */
@@ -525,14 +568,27 @@ export const cardStyles = css`
     width: 40px;
     height: 40px;
     border-radius: 10px;
-    background: var(--jbl-accent-fill);
+    background: linear-gradient(160deg, rgba(255, 255, 255, 0.16), rgba(0, 0, 0, 0.12)), var(--jbl-accent-fill);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18), 0 4px 14px rgba(var(--jbl-accent-rgb), 0.35);
     color: var(--jbl-on-accent);
-    font-weight: 800;
-    font-size: 0.85rem;
-    letter-spacing: 0.02em;
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+  /* Vector lettering: stays sharp at any zoom or device pixel ratio. */
+  .badge-jbl svg {
+    display: block;
+    width: 30px;
+    height: 14px;
+    overflow: visible;
+  }
+  .badge-jbl text {
+    fill: currentColor;
+    font-family: "Arial Black", "Helvetica Neue", Arial, sans-serif;
+    font-weight: 900;
+    font-size: 14px;
+    letter-spacing: -0.4px;
+    text-rendering: geometricPrecision;
   }
   .titles {
     flex: 1 1 auto;
@@ -565,10 +621,28 @@ export const cardStyles = css`
     overflow: hidden;
     text-overflow: ellipsis;
   }
+  .power {
+    width: 42px;
+    height: 42px;
+    border-color: rgba(var(--jbl-accent-rgb), 0.55);
+    background: rgba(var(--jbl-accent-rgb), 0.14);
+    color: var(--jbl-accent);
+    box-shadow: 0 4px 16px rgba(var(--jbl-accent-rgb), 0.3);
+  }
+  .power:hover:not(:disabled) {
+    box-shadow: 0 6px 22px rgba(var(--jbl-accent-rgb), 0.5);
+  }
   .power.on {
     background: var(--jbl-accent-fill);
     border-color: var(--jbl-accent-fill);
     color: var(--jbl-on-accent);
+    box-shadow: 0 6px 20px rgba(var(--jbl-accent-rgb), 0.55);
+  }
+  .power.on:not(:disabled) {
+    box-shadow: 0 6px 20px rgba(var(--jbl-accent-rgb), 0.55);
+  }
+  .power.on:hover:not(:disabled) {
+    box-shadow: 0 8px 26px rgba(var(--jbl-accent-rgb), 0.7);
   }
 
   .tabs {

@@ -585,7 +585,9 @@ export class JblBarCard extends LitElement {
     const power = powerToggle(ctx);
     return html`
       <div class="header">
-        <div class="badge-jbl" aria-hidden="true">JBL</div>
+        <div class="badge-jbl" aria-hidden="true">
+          <svg viewBox="0 0 30 14"><text x="15" y="12" text-anchor="middle" textLength="29" lengthAdjust="spacingAndGlyphs">JBL</text></svg>
+        </div>
         <button type="button" class="titles" title=${t("header.details")} @click=${() => ctx.moreInfo(mediaPlayer)}>
           <span class="name">${this._deviceName(ctx)}</span>
           <span class="subtitle">${this._subtitle(ctx)}</span>
