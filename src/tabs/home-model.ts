@@ -209,6 +209,10 @@ export interface HomeVolume {
   shownText: string;
   /** A volume change is on its way. */
   pending: boolean;
+  /** The bar is in standby or unreachable: there is no volume to show. */
+  off: boolean;
+  /** Text shown instead of the number while off ("Off"). */
+  offText: string;
   muted: boolean;
   /** "Muted" badge text when muted. */
   mutedText?: string;
@@ -463,6 +467,8 @@ function volumeModel(ctx: TabContext, standbyHint: string | undefined): HomeVolu
     shown,
     shownText: shown !== undefined ? String(shown) : ctx.t("common.unknown"),
     pending: volPending,
+    off: !on,
+    offText: ctx.t("home.volume_off"),
     muted,
     mutedText: muted ? ctx.t("home.muted") : undefined,
     down: {
